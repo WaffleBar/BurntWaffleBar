@@ -4,6 +4,7 @@
 ## Author: Burn and Waffle
 ## Version: 1.8.5
 ## IconTexture: Interface\AddOns\BurntWaffleBar\Media\AddonIcon.png
+## X-Website: https://github.com/WaffleBar/BurntWaffleBar
 ## SavedVariables: BurntWaffleBarDB
 
 Libs.xml

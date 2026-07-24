@@ -53,6 +53,17 @@ Add-Type -Path "tools\ProcessIllidari.dll"
 [ProcessTheIllidariIcons]::ProcessAll("Media\Themes\TheIllidari\source", "Media\Themes\TheIllidari")
 ```
 
+Regenerate the WowUp addon icon or Hub preview images:
+
+```powershell
+$csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+& $csc /nologo /out:"tools\MakeAddonIcon.exe" "tools\MakeAddonIcon.cs"
+& "tools\MakeAddonIcon.exe" .
+
+& $csc /nologo /out:"tools\MakeWowUpPreviews.exe" "tools\MakeWowUpPreviews.cs"
+& "tools\MakeWowUpPreviews.exe" .
+```
+
 ## Third-party libraries
 
 This addon embeds [LibEditMode](https://github.com/p3lim-wow/LibEditMode) (see `libs/LibEditMode/LICENSE.txt`) and LibStub for Edit Mode frame repositioning.
