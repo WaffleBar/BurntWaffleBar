@@ -26,13 +26,17 @@ A compact custom micro menu bar for World of Warcraft retail, with multiple icon
 
 ## WoWUp
 
-BurntWaffleBar is distributed via **GitHub releases** for [WoWUp](https://wowup.io):
+BurntWaffleBar is on **WowUpHub** — search for **BurntWaffleBar** in WowUp’s **Get Addons** tab. You can also install from GitHub:
 
 1. In WoWUp, click **Get Addons → Install from URL**
 2. Paste: `https://github.com/WaffleBar/BurntWaffleBar`
-3. WoWUp installs from the latest tagged release and keeps the addon updated
+3. WowUp installs from the latest tagged release
 
 The repo must stay **public** with tagged releases that include a packaged zip (created automatically by GitHub Actions when you push a `v*` tag).
+
+**GitHub-only installs:** If you installed via URL before Hub listing, some WowUp CF builds fail on *Update* for GitHub addons ([known bug](https://github.com/WowUp/WowUp.CF/issues/107)). Hub installs should update normally. If updates still fail, remove the addon and reinstall from search or URL, or add a GitHub token under WowUp → **Options → Addons**.
+
+If WoW is installed under `Program Files`, try running WowUp as administrator when updating.
 
 **GitHub topics** (for WowUp Hub categories): under your repo’s **About → Topics**, add `action-bars`. Optional but common: `warcraft-addon` or `world-of-warcraft-addon`. Topics are free-form — type them even if autocomplete doesn’t suggest them (ignore `wow-addon-snippet`; that’s for code snippets).
 

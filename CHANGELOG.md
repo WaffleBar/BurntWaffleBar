@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [1.8.5] — 2026-07-24
+
+### Changed
+- **WowUp Hub** — BurntWaffleBar is now listed for search and updates via WowUpHub
+
 ## [1.8.4] — 2026-07-24
 
 ### Changed
