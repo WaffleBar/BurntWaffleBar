@@ -8,7 +8,7 @@ A compact custom micro menu bar for World of Warcraft retail, with multiple icon
 - Optional clock above the bar
 - Hide Blizzard's default micro menu
 - **Edit Mode:** drag the bar in WoW's native Edit Mode (`/editmode`) — no extra addons required
-- Icon themes: Burnt Waffle, Pristine, Frozen Waffle, The Paladin, The Illidari
+- Icon themes: Burnt Waffle, Pristine, Frozen Waffle, The Paladin, The Illidari, and **all 13 retail classes** (Warrior, Hunter, Rogue, Priest, Shaman, Mage, Warlock, Monk, Druid, Death Knight, Evoker)
 
 ## Installation
 
@@ -51,6 +51,14 @@ $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /target:library /r:System.Drawing.dll /out:"tools\ProcessIllidari.dll" "tools\ProcessTheIllidariIcons.cs"
 Add-Type -Path "tools\ProcessIllidari.dll"
 [ProcessTheIllidariIcons]::ProcessAll("Media\Themes\TheIllidari\source", "Media\Themes\TheIllidari")
+```
+
+Regenerate class theme packs (all 11 non-Paladin/DH classes):
+
+```powershell
+$csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+& $csc /nologo /out:"tools\ClassThemeBuilder.exe" "tools\ClassThemeBuilder.cs"
+& "tools\ClassThemeBuilder.exe" .
 ```
 
 Regenerate the WowUp addon icon or Hub preview images:

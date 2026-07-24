@@ -2,6 +2,12 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.0.0] — 2026-07-24
+
+### Added
+- **Class icon theme packs** — 11 new themes (Warrior, Hunter, Rogue, Priest, Shaman, Mage, Warlock, Monk, Druid, Death Knight, Evoker) using Illidari-style silhouettes with official class color palettes
+- **ClassThemeBuilder** — `tools/ClassThemeBuilder.cs` generates sources and production icons from The Illidari templates
+
 ## [1.8.5] — 2026-07-24
 
 ### Changed

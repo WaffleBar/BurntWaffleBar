@@ -1,0 +1,13 @@
+The Evoker theme
+================
+
+Retail WoW Evoker class identity — Dracthyr legacy — bronze hourglass, emerald life, azure breath, dragonflight magic.
+
+Bootstrap: Illidari micro-menu silhouettes recolored to Evoker
+class palette (official UI class color + thematic accent glow).
+
+Pipeline: tools/ClassThemeBuilder.cs
+  Raw:  source/TheEvoker_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Evoker.

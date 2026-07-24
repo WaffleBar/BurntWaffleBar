@@ -1,0 +1,13 @@
+The Monk theme
+==============
+
+Retail WoW Monk class identity — Inner harmony — jade mists, brew barrels, Pandaren scrolls, chi energy.
+
+Bootstrap: Illidari micro-menu silhouettes recolored to Monk
+class palette (official UI class color + thematic accent glow).
+
+Pipeline: tools/ClassThemeBuilder.cs
+  Raw:  source/TheMonk_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Monk.

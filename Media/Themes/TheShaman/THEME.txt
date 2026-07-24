@@ -1,0 +1,13 @@
+The Shaman theme
+================
+
+Retail WoW Shaman class identity — Elements unleashed — storm totems, molten lava, tidal blue, ancestral spirits.
+
+Bootstrap: Illidari micro-menu silhouettes recolored to Shaman
+class palette (official UI class color + thematic accent glow).
+
+Pipeline: tools/ClassThemeBuilder.cs
+  Raw:  source/TheShaman_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Shaman.
