@@ -91,37 +91,39 @@ public static class ClassThemeBuilder
     public static void Main(string[] args)
     {
         string root = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-        string illidariSource = Path.Combine(root, "Media", "Themes", "TheIllidari", "source");
-        if (!Directory.Exists(illidariSource))
+        bool drawOnly = args.Length > 1 && args[1] == "--draw-only";
+        bool processOnly = args.Length > 1 && args[1] == "--process-only";
+
+        if (!processOnly)
         {
-            Console.Error.WriteLine("Missing Illidari sources: " + illidariSource);
-            Environment.Exit(1);
+            Console.WriteLine("Drawing class-specific source art...");
+            DrawClassThemeSources.DrawAll(root);
+        }
+
+        if (drawOnly)
+        {
+            return;
         }
 
         foreach (ClassThemeDef theme in Classes)
         {
-            Console.WriteLine("=== " + theme.Label + " ===");
+            Console.WriteLine("=== Processing " + theme.Label + " ===");
             string themeRoot = Path.Combine(root, "Media", "Themes", theme.Folder);
             string sourceDir = Path.Combine(themeRoot, "source");
             Directory.CreateDirectory(sourceDir);
 
             foreach (string name in Names)
             {
-                string illidariPath = Path.Combine(illidariSource, "TheIllidari_" + name + ".png");
-                if (!File.Exists(illidariPath))
+                string sourcePath = Path.Combine(sourceDir, theme.Id + "_" + name + ".png");
+                if (!File.Exists(sourcePath))
                 {
-                    Console.WriteLine("  Missing Illidari: " + name);
+                    Console.WriteLine("  Missing source: " + name);
                     continue;
                 }
 
-                using (var src = new Bitmap(illidariPath))
-                using (var remapped = RemapIllidariSource(src, theme))
-                {
-                    string outSource = Path.Combine(sourceDir, theme.Id + "_" + name + ".png");
-                    remapped.Save(outSource, ImageFormat.Png);
-                    using (var processed = Process(remapped, theme))
-                        processed.Save(Path.Combine(themeRoot, name + ".png"), ImageFormat.Png);
-                }
+                using (var src = new Bitmap(sourcePath))
+                using (var processed = Process(src, theme))
+                    processed.Save(Path.Combine(themeRoot, name + ".png"), ImageFormat.Png);
                 Console.WriteLine("  " + name);
             }
 
@@ -140,10 +142,10 @@ public static class ClassThemeBuilder
         sb.AppendLine();
         sb.AppendLine("Retail WoW " + theme.ClassName + " class identity — " + theme.Fantasy);
         sb.AppendLine();
-        sb.AppendLine("Bootstrap: Illidari micro-menu silhouettes recolored to " + theme.ClassName);
-        sb.AppendLine("class palette (official UI class color + thematic accent glow).");
+        sb.AppendLine("Procedurally drawn micro-menu icons with unique " + theme.ClassName);
+        sb.AppendLine("class props (weapons, emblems, armor) per button.");
         sb.AppendLine();
-        sb.AppendLine("Pipeline: tools/ClassThemeBuilder.cs");
+        sb.AppendLine("Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs");
         sb.AppendLine("  Raw:  source/" + theme.Id + "_{Name}.png");
         sb.AppendLine("  Out:  this folder / {Name}.png");
         sb.AppendLine();
@@ -436,13 +438,17 @@ public static class ClassThemeBuilder
                 sr = (float)Math.Pow(Math.Max(0f, sr), gamma);
                 sg = (float)Math.Pow(Math.Max(0f, sg), gamma);
                 sb = (float)Math.Pow(Math.Max(0f, sb), gamma);
-                float accent = Math.Max(0f, sg - Math.Max(sr, sb) * 0.80f);
-                if (accent > 0.015f)
+                float accentMatch = 1f - Math.Min(1f,
+                    (float)Math.Sqrt(
+                        (sr - theme.AccentR) * (sr - theme.AccentR) +
+                        (sg - theme.AccentG) * (sg - theme.AccentG) +
+                        (sb - theme.AccentB) * (sb - theme.AccentB)));
+                if (accentMatch > 0.35f)
                 {
-                    float boost = Math.Min(1f, accent * 3f);
-                    sr = Lerp(sr, theme.AccentR, boost * 0.25f);
-                    sg = Lerp(sg, theme.AccentG, boost * 0.25f);
-                    sb = Lerp(sb, theme.AccentB, boost * 0.25f);
+                    float boost = (accentMatch - 0.35f) * 1.4f;
+                    sr = Lerp(sr, theme.AccentR, boost * 0.30f);
+                    sg = Lerp(sg, theme.AccentG, boost * 0.30f);
+                    sb = Lerp(sb, theme.AccentB, boost * 0.30f);
                 }
                 HarmonizeClock(ref sr, ref sg, ref sb, theme, 0.55f);
                 output.SetPixel(x, y, Color.FromArgb(c.A,

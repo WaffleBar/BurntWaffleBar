@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.1.0] — 2026-07-24
+
+### Changed
+- **Class theme props** — all 11 class packs now use procedurally drawn icons with unique class weapons and emblems (shields, bows, daggers, totems, etc.) instead of recolored Illidari silhouettes
+
 ## [2.0.0] — 2026-07-24
 
 ### Added

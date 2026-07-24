@@ -53,11 +53,11 @@ Add-Type -Path "tools\ProcessIllidari.dll"
 [ProcessTheIllidariIcons]::ProcessAll("Media\Themes\TheIllidari\source", "Media\Themes\TheIllidari")
 ```
 
-Regenerate class theme packs (all 11 non-Paladin/DH classes):
+Regenerate class theme packs (draws sources + processes to 256px):
 
 ```powershell
 $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
-& $csc /nologo /out:"tools\ClassThemeBuilder.exe" "tools\ClassThemeBuilder.cs"
+& $csc /nologo /out:"tools\ClassThemeBuilder.exe" "tools\ClassIconCore.cs" "tools\ClassIconRenderer.cs" "tools\DrawClassThemeSources.cs" "tools\ClassThemeBuilder.cs"
 & "tools\ClassThemeBuilder.exe" .
 ```
 

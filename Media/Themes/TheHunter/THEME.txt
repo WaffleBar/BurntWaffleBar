@@ -3,10 +3,10 @@ The Hunter theme
 
 Retail WoW Hunter class identity — Wilderness tracker — leather and bone, emerald marksmanship, beast mastery runes.
 
-Bootstrap: Illidari micro-menu silhouettes recolored to Hunter
-class palette (official UI class color + thematic accent glow).
+Procedurally drawn micro-menu icons with unique Hunter
+class props (weapons, emblems, armor) per button.
 
-Pipeline: tools/ClassThemeBuilder.cs
+Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheHunter_{Name}.png
   Out:  this folder / {Name}.png
 

@@ -3,10 +3,10 @@ The Death Knight theme
 
 Retail WoW Death Knight class identity — Unholy frost — runeforged blades, blood runes, Lich King ice, Scourge steel.
 
-Bootstrap: Illidari micro-menu silhouettes recolored to Death Knight
-class palette (official UI class color + thematic accent glow).
+Procedurally drawn micro-menu icons with unique Death Knight
+class props (weapons, emblems, armor) per button.
 
-Pipeline: tools/ClassThemeBuilder.cs
+Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheDeathKnight_{Name}.png
   Out:  this folder / {Name}.png
 

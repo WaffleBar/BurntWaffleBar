@@ -3,10 +3,10 @@ The Mage theme
 
 Retail WoW Mage class identity — Arcane mastery — runic circles, frost crystals, arcane violet-blue energy.
 
-Bootstrap: Illidari micro-menu silhouettes recolored to Mage
-class palette (official UI class color + thematic accent glow).
+Procedurally drawn micro-menu icons with unique Mage
+class props (weapons, emblems, armor) per button.
 
-Pipeline: tools/ClassThemeBuilder.cs
+Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheMage_{Name}.png
   Out:  this folder / {Name}.png
 
