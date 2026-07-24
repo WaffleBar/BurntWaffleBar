@@ -1,3 +1,6 @@
+# Release packages
+*.zip
+
 # Build artifacts (icon processor tools)
 tools/*.dll
 tools/*.exe
