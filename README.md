@@ -34,7 +34,7 @@ BurntWaffleBar is distributed via **GitHub releases** for [WoWUp](https://wowup.
 
 The repo must stay **public** with tagged releases that include a packaged zip (created automatically by GitHub Actions when you push a `v*` tag).
 
-**GitHub topics** (for WoWUp Hub categories): add `wow-addon` and `action-bars` under your repo’s **About → Topics** on GitHub.
+**GitHub topics** (for WowUp Hub categories): under your repo’s **About → Topics**, add `action-bars`. Optional but common: `warcraft-addon` or `world-of-warcraft-addon`. Topics are free-form — type them even if autocomplete doesn’t suggest them (ignore `wow-addon-snippet`; that’s for code snippets).
 
 ## Development
 

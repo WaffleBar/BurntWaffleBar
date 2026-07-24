@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [1.8.4] — 2026-07-24
+
+### Changed
+- **Addon icon** — dedicated `Media/AddonIcon.png` with solid black background for addon managers (WowUp, in-game addon list)
+
 ## [1.8.3] — 2026-07-24
 
 ### Removed
