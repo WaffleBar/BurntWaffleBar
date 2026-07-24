@@ -2,6 +2,16 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [1.7.2] — 2026-07-24
+
+### Fixed
+- **Spooky Waffle** icons looked thinned out in the bar — reprocessed with tight-crop and proper fill scaling (~92% vs ~66%)
+
+## [1.7.1] — 2026-07-24
+
+### Added
+- WoWUp release workflow and `.pkgmeta` packaging
+
 ## [1.7.0] — 2026-07-24
 
 ### Added

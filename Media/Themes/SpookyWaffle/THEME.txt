@@ -8,8 +8,9 @@ One small accent per icon (ghost, raven, or bat).
 
 Source art: AI-generated from Burnt Waffle references (1536×1024), then
 post-processed via tools/ProcessSpookyIcons.cs:
-  - Scale-to-fit within 256×256 at 90%
   - Key near-pure-black background to transparent
+  - Tight-crop to icon content, then scale to 93% fill at 256×256
+  - Subtle purple contact shadow for bar-size readability
 
 Raw sources: source/SpookyWaffle_{Name}.png
 Production icons: this folder
