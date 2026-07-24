@@ -17,6 +17,30 @@ local function IsValidFrame(frame, frameType)
     return ok and (not frameType or objectType == frameType)
 end
 
+local function TooltipsEnabled()
+    local db = BurntWaffleBarDB
+    return not db or db.showTooltips ~= false
+end
+
+local function ShowMenuTooltip(owner, title, subtitle)
+    if not TooltipsEnabled() or not title or not owner then
+        return
+    end
+
+    GameTooltip:SetOwner(owner, "ANCHOR_NONE")
+    GameTooltip:ClearLines()
+    GameTooltip:SetPoint("BOTTOM", owner, "TOP", 0, 4)
+    GameTooltip:SetText(title, 1, 1, 1)
+    if subtitle and subtitle ~= "" then
+        GameTooltip:AddLine(subtitle, 0.82, 0.82, 0.82, true)
+    end
+    GameTooltip:Show()
+end
+
+local function HideMenuTooltip()
+    GameTooltip:Hide()
+end
+
 local function FormatClockTime(use24Hour)
     local timeTable = date("*t")
     local hour = timeTable.hour
@@ -455,6 +479,14 @@ local function EnsureClockFrame()
     if not menuFrame.clockHolder then
         menuFrame.clockHolder = CreateFrame("Frame", nil, menuFrame)
         menuFrame.clockHolder:SetPoint("TOP", menuFrame, "TOP", 0, 0)
+        menuFrame.clockHolder:EnableMouse(true)
+        menuFrame.clockHolder:SetFrameLevel(25)
+        menuFrame.clockHolder:SetScript("OnEnter", function()
+            local db = BurntWaffleBarDB or {}
+            local formatLabel = db.clockFormat == "24" and "24-hour time" or "12-hour time"
+            ShowMenuTooltip(menuFrame.clockHolder, "Clock", formatLabel)
+        end)
+        menuFrame.clockHolder:SetScript("OnLeave", HideMenuTooltip)
     end
 
     if not menuFrame.clockText then
@@ -792,6 +824,7 @@ local function GetSlotContent(slot, iconSize)
     if not slot.content then
         slot.content = CreateFrame("Frame", nil, slot)
         slot.content:SetPoint("CENTER")
+        slot.content:SetFrameLevel(1)
     end
 
     slot.content:SetSize(iconSize, iconSize)
@@ -811,11 +844,33 @@ local function DisableButtonHighlight(slot, btn)
     end
 end
 
+local function BindButtonTooltip(btn, slot, def)
+    if not btn or not def then
+        return
+    end
+
+    btn:EnableMouse(true)
+    btn:SetMouseMotionEnabled(true)
+    btn:RegisterForClicks("AnyUp")
+    btn:SetScript("OnEnter", function()
+        if slot then
+            SetSlotHovered(slot, true)
+        end
+        ShowMenuTooltip(btn, def.tooltip or def.label, def.tooltipDesc)
+    end)
+    btn:SetScript("OnLeave", function()
+        if slot then
+            SetSlotHovered(slot, false)
+        end
+        HideMenuTooltip()
+    end)
+end
+
 local function GetOrCreateButtonEntry(def)
     local wantsSecure = def.isSecure and true or false
     local entry = activeButtons[def.id]
     if entry and IsValidFrame(entry.slot, "Frame") and IsValidFrame(entry.btn, "Button") then
-        if entry.isSecure == wantsSecure then
+        if entry.isSecure == wantsSecure and entry.btn:GetParent() == entry.slot then
             return entry
         end
 
@@ -832,28 +887,17 @@ local function GetOrCreateButtonEntry(def)
 
     local btn
     if wantsSecure then
-        btn = CreateFrame("Button", btnName, menuFrame, "SecureActionButtonTemplate")
+        btn = CreateFrame("Button", btnName, slot, "SecureActionButtonTemplate")
     else
-        btn = CreateFrame("Button", btnName, menuFrame)
+        btn = CreateFrame("Button", btnName, slot)
     end
 
     StripButtonChrome(btn, wantsSecure)
-    btn:RegisterForClicks("AnyUp")
     btn:ClearAllPoints()
     btn:SetAllPoints(slot)
-    btn:SetFrameLevel(slot:GetFrameLevel() + 2)
+    btn:SetFrameLevel(30)
 
-    btn:SetScript("OnEnter", function()
-        SetSlotHovered(slot, true)
-        GameTooltip:SetOwner(btn, "ANCHOR_TOP")
-        GameTooltip:SetText(def.tooltip, 1, 1, 1, true)
-        GameTooltip:Show()
-    end)
-
-    btn:SetScript("OnLeave", function()
-        SetSlotHovered(slot, false)
-        GameTooltip:Hide()
-    end)
+    BindButtonTooltip(btn, slot, def)
 
     entry = {
         slot = slot,
@@ -1079,8 +1123,8 @@ local function SetupButton(entry, def, iconSize)
     end
 
     EnsureHoverGlow(slot, slot.mmIcon, drawSize)
-
     DisableButtonHighlight(slot, btn)
+    BindButtonTooltip(btn, slot, def)
 end
 
 local function ClickNativeMicroButton(label, ...)
@@ -1212,6 +1256,7 @@ local buttonDefs = {
         label = "Warband Collections",
         nativeBtn = "CollectionsMicroButton",
         tooltip = "Warband Collections",
+        tooltipDesc = "Open Warband Collections",
         isSecure = false,
         onClick = OpenCollections,
     },
@@ -1220,6 +1265,7 @@ local buttonDefs = {
         setting = "showPVP",
         label = "PvP",
         tooltip = "Player vs. Player",
+        tooltipDesc = "Open the PvP window",
         isSecure = false,
         onClick = OpenPVP,
     },
@@ -1229,6 +1275,7 @@ local buttonDefs = {
         label = "Adventure Guide",
         nativeBtn = "EJMicroButton",
         tooltip = "Adventure Guide",
+        tooltipDesc = "Open the Adventure Guide",
         isSecure = false,
         onClick = OpenAdventureGuide,
     },
@@ -1238,6 +1285,7 @@ local buttonDefs = {
         label = "Housing",
         nativeBtn = "HousingMicroButton",
         tooltip = "Housing",
+        tooltipDesc = "Open Housing",
         isSecure = false,
         onClick = OpenHousing,
     },
@@ -1247,6 +1295,7 @@ local buttonDefs = {
         label = "Group Finder",
         nativeBtn = "LFDMicroButton",
         tooltip = "Group Finder",
+        tooltipDesc = "Open the Group Finder",
         isSecure = false,
         onClick = OpenGroupFinder,
     },
@@ -1256,6 +1305,7 @@ local buttonDefs = {
         label = "Quest Tracker",
         nativeBtn = "QuestLogMicroButton",
         tooltip = "Quest Log",
+        tooltipDesc = "Open the Quest Log",
         isSecure = false,
         onClick = OpenQuestTracker,
     },
@@ -1265,6 +1315,7 @@ local buttonDefs = {
         label = "Achievement Tracker",
         nativeBtn = "AchievementMicroButton",
         tooltip = "Achievements",
+        tooltipDesc = "Open Achievements",
         isSecure = false,
         onClick = OpenAchievementTracker,
     },
@@ -1274,6 +1325,7 @@ local buttonDefs = {
         label = "Talents & Spellbook",
         nativeBtn = "PlayerSpellsMicroButton",
         tooltip = "Talents & Spellbook",
+        tooltipDesc = "Open Talents and the Spellbook",
         isSecure = false,
         onClick = OpenTalents,
     },
@@ -1283,6 +1335,7 @@ local buttonDefs = {
         label = "Character",
         nativeBtn = "CharacterMicroButton",
         tooltip = "Character Info",
+        tooltipDesc = "Open Character Info",
         isSecure = false,
         onClick = OpenCharacter,
     },
@@ -1292,6 +1345,7 @@ local buttonDefs = {
         label = "Guild",
         nativeBtn = "GuildMicroButton",
         tooltip = "Guild & Communities",
+        tooltipDesc = "Open Guild and Communities",
         isSecure = false,
         onClick = OpenGuild,
     },
@@ -1301,6 +1355,7 @@ local buttonDefs = {
         label = "Social",
         nativeBtn = "QuickJoinToastButton",
         tooltip = "Social",
+        tooltipDesc = "Open Friends and Social",
         isSecure = false,
         onClick = OpenSocial,
     },
@@ -1310,6 +1365,7 @@ local buttonDefs = {
         label = "Game Menu",
         nativeBtn = "MainMenuMicroButton",
         tooltip = "Game Menu",
+        tooltipDesc = "Open the Game Menu",
         isSecure = false,
         onClick = function(_, button)
             if button == "LeftButton" then

@@ -21,6 +21,7 @@ ns.defaults = {
     showGuild = true,
     showSocial = true,
     showGameMenu = true,
+    showTooltips = true,
     showClock = true,
     clockFormat = "12",
     clockSize = 100,
@@ -57,8 +58,8 @@ local function MigrateSavedVariables()
         BurntWaffleBarDB.iconTheme = "Pristine"
     end
 
-    if BurntWaffleBarDB.iconTheme == "ScaryWaffle" then
-        BurntWaffleBarDB.iconTheme = "SpookyWaffle"
+    if BurntWaffleBarDB.iconTheme == "ScaryWaffle" or BurntWaffleBarDB.iconTheme == "SpookyWaffle" then
+        BurntWaffleBarDB.iconTheme = "BurntWaffle"
     end
 
     if BurntWaffleBarDB.iconTheme == "Blizzard" or not ns.iconThemes[BurntWaffleBarDB.iconTheme] then

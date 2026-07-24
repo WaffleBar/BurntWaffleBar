@@ -6,7 +6,6 @@ local ICON_EXTENSIONS = { ".png", ".tga" }
 local THEME_ICON_EXTENSIONS = {
     Pristine = { ".png" },
     FrozenWaffle = { ".png" },
-    SpookyWaffle = { ".png" },
     ThePaladin = { ".png" },
     TheIllidari = { ".png" },
 }
@@ -35,17 +34,6 @@ local FROZEN_WAFFLE_CLOCK_OUTLINE = {
     { x = -1, y = 1, alpha = 0.72 },
     { x = 1, y = -1, alpha = 0.72 },
     { x = -1, y = -1, alpha = 0.72 },
-}
-
-local SPOOKY_WAFFLE_CLOCK_OUTLINE = {
-    { x = 1, y = 0, alpha = 0.88 },
-    { x = -1, y = 0, alpha = 0.88 },
-    { x = 0, y = 1, alpha = 0.88 },
-    { x = 0, y = -1, alpha = 0.88 },
-    { x = 1, y = 1, alpha = 0.74 },
-    { x = -1, y = 1, alpha = 0.74 },
-    { x = 1, y = -1, alpha = 0.74 },
-    { x = -1, y = -1, alpha = 0.74 },
 }
 
 local THE_PALADIN_CLOCK_OUTLINE = {
@@ -146,32 +134,6 @@ ns.iconThemes = {
             glowOuterAlpha = 0.40,
         },
     },
-    SpookyWaffle = {
-        label = "Spooky Waffle",
-        root = ADDON_ROOT .. "Media\\Themes\\SpookyWaffle\\",
-        icons = BUTTON_ICON_FILES,
-        clockStyle = {
-            color = { 0.72, 1.0, 0.45 },
-            font = ADDON_ROOT .. "Media\\Fonts\\VarelaRound-Regular.ttf",
-            sizeRatio = CLOCK_SIZE_RATIO,
-            gapRatio = CLOCK_GAP_RATIO,
-            flags = "",
-            outline = {
-                color = { 0.12, 0.02, 0.18 },
-                offsets = SPOOKY_WAFFLE_CLOCK_OUTLINE,
-            },
-        },
-        hoverStyle = {
-            scale = 1.10,
-            brightness = 1.20,
-            duration = 0.12,
-            glowColor = { 0.48, 1.0, 0.32 },
-            glowAlpha = 0.80,
-            glowScale = 1.24,
-            glowOuterScale = 1.44,
-            glowOuterAlpha = 0.44,
-        },
-    },
     ThePaladin = {
         label = "The Paladin",
         root = ADDON_ROOT .. "Media\\Themes\\ThePaladin\\",
@@ -260,7 +222,6 @@ ns.iconThemeOrder = {
     "BurntWaffle",
     "Pristine",
     "FrozenWaffle",
-    "SpookyWaffle",
     "ThePaladin",
     "TheIllidari",
 }

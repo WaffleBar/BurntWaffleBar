@@ -191,6 +191,7 @@ local function InitializeSettings()
 
     local enabledInit = CreateCheckbox(category, "enabled", "Enable BurntWaffleBar", "Show the custom micro menu bar.")
     local hideNativeInit = CreateCheckbox(category, "hideNativeMenu", "Hide Blizzard Micro Menu", "Hide the default bottom menu while this addon is enabled.")
+    local tooltipsInit = CreateCheckbox(category, "showTooltips", "Show Icon Tooltips", "Show a tooltip when you hover over menu icons and the clock.")
     local themeInit = CreateThemeDropdown(category)
 
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Buttons"))

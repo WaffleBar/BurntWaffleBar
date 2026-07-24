@@ -2,6 +2,40 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [1.8.3] — 2026-07-24
+
+### Removed
+- **Spooky Waffle** theme — removed from the addon pending a future rework
+
+## [1.8.2] — 2026-07-24
+
+### Changed
+- **Spooky Waffle v2 sources regenerated** — solid opaque stone/metal bodies (no hollow wire frames); processor fills remaining interior gaps with purple crust or green glow
+
+## [1.8.1] — 2026-07-24
+
+### Fixed
+- **Icon tooltips** — buttons are now parented correctly for mouse hit-testing; tooltips anchor above each icon on hover
+- **Spooky Waffle sizing** — icons normalized to The Paladin footprints with tighter source crop and 98% fill
+
+## [1.8.0] — 2026-07-24
+
+### Added
+- **Icon tooltips** — hover any menu icon or the clock to see what it opens (toggle in `/bw` → Show Icon Tooltips)
+
+### Changed
+- **Spooky Waffle v2** — fully rebuilt in Paladin-quality style with spooky/warlock palette (obsidian, void purple, sickly green glow). New source art for all 12 icons; Paladin-style processing pipeline
+
+## [1.7.4] — 2026-07-24
+
+### Fixed
+- **Spooky Waffle** — reverted broken SDF/cyan rebuild; icons now use the same minimal pipeline as Burnt Waffle (scale + background key only) from the original spooky source art
+
+## [1.7.3] — 2026-07-24
+
+### Fixed
+- **Spooky Waffle** icon sizing normalized to Burnt Waffle footprints so all 12 buttons match in the bar
+
 ## [1.7.2] — 2026-07-24
 
 ### Fixed
@@ -26,7 +60,7 @@ All notable changes to BurntWaffleBar are documented here.
 - Illidari PVP icon style and warglaive silhouette
 
 ### Themes included
-- Burnt Waffle, Pristine, Frozen Waffle, Spooky Waffle, The Paladin, The Illidari
+- Burnt Waffle, Pristine, Frozen Waffle, The Paladin, The Illidari
 
 ## Earlier development
 
