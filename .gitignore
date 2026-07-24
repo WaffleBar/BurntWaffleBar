@@ -1,0 +1,15 @@
+# Build artifacts (icon processor tools)
+tools/*.dll
+tools/*.exe
+tools/*_test.png
+tools/warglaive_test.png
+tools/warglaive_polished.png
+
+# OS / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*.swo
+.vs/
+.idea/

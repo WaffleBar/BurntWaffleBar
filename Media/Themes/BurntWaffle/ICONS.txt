@@ -1,0 +1,29 @@
+BurntWaffleBar Custom Icons
+=========================
+
+Drop your icon files in this folder, then enable "Use Custom Icons" in /bw settings.
+
+Recommended specs:
+  - Size: 64x64 or 128x128 pixels (square)
+  - Format: PNG (transparent background) or TGA
+  - Style: Simple, readable silhouettes work best at small sizes
+
+File names (must match exactly):
+  Collections.png         Warband Collections
+  PVP.png                 Player vs. Player
+  AdventureGuide.png      Adventure Guide
+  Housing.png             Housing
+  GroupFinder.png         Group Finder
+  QuestTracker.png        Quest Tracker
+  AchievementTracker.png  Achievement Tracker
+  Talents.png             Talents & Spellbook
+  Character.png           Character (replaces your portrait icon)
+  Guild.png               Guild
+  Social.png              Social
+  GameMenu.png            Game Menu
+
+You can use .tga instead of .png if you prefer.
+
+After adding or changing icons, run /reload in-game.
+
+If a file is missing, that button falls back to the default Blizzard icon.

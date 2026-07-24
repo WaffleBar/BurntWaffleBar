@@ -1,0 +1,32 @@
+The Illidari theme
+====================
+
+Modern retail WoW Demon Hunter / Illidari identity — fel-green infernal
+power, obsidian leather, demonic runes, and the official class-purple UI
+accent (#A330C9) on hover and clock rim. Outlawed fel-weapon fantasy;
+NO waffle grid or breakfast texture.
+
+Visual pillars (Legion / Dragonflight / The War Within era):
+  - Fel flame highlights (#55FF88 → #B8FFB0 inner burn)
+  - Obsidian / charcoal leather midtones
+  - Deep violet-black shadows (Vault of the Wardens, Black Temple)
+  - Class-purple gleam on brightest rim pixels (raid-frame recognition)
+  - Warglaives, blindfold, demonic sigils, fel crystals — Illidan's legacy
+
+Lore touchstones:
+  - The Illidari: demon hunters who bind fel to destroy the Legion
+  - Mardum, Black Temple, Vault of the Wardens, Fel Rush / Metamorphosis
+  - Spectral sight, tattooed runes, consumed demon hearts
+
+Source art: AI-generated Illidari micro-menu icons (square, black background).
+
+Pipeline:
+  tools/ProcessTheIllidariIcons.cs
+    Raw:  source/TheIllidari_{Name}.png
+    Out:  this folder / {Name}.png
+    - 512px scale/crop → fel contact shadow → 256px downscale
+    - Preserves source colors (gold fel, purple rim) — no SDF recolor
+
+Files: Collections.png … GameMenu.png (standard micro menu names)
+
+Select in /bw → Icon Theme → The Illidari.

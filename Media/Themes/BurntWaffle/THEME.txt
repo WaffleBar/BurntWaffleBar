@@ -1,0 +1,30 @@
+Burnt Waffle Icon Theme
+=======================
+
+Premium hand-styled icons: charred waffle-grid textures with molten orange
+glow, layered warm depth (char black, burnt umber, golden amber, hot
+yellow cores), ember sparks, and unique molten syrup drips per icon.
+
+Source art: AI-generated from legacy Burnt Waffle references (1536×1024),
+post-processed via tools/ProcessBurntIcons.cs:
+  - Scale-to-fit within 256×256 at 90%
+  - Key near-pure-black background to transparent
+
+Raw sources: source/BurntWaffle_{Name}.png
+Production icons: this folder ({Name}.png)
+
+File names (must match exactly):
+  Collections.png         Warband Collections
+  PVP.png                 Player vs. Player
+  AdventureGuide.png      Adventure Guide
+  Housing.png             Housing
+  GroupFinder.png         Group Finder
+  QuestTracker.png        Quest Tracker
+  AchievementTracker.png  Achievement Tracker
+  Talents.png             Talents & Spellbook
+  Character.png           Character (replaces your portrait icon)
+  Guild.png               Guild
+  Social.png              Social
+  GameMenu.png            Game Menu
+
+Select the active theme in /bw under Icon Theme.

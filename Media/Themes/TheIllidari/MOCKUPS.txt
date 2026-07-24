@@ -1,0 +1,26 @@
+The Illidari — Icon Set (v1)
+================================
+
+Direction: Premium Illidari / Demon Hunter micro-menu icons. Fel-green
+infernal power, obsidian leather, demonic runes, class-purple UI accent.
+
+Palette:
+  Class purple   #A330C9  — hover glow, clock rim
+  Fel green      #55FF88  — spell highlights, spectral sight
+  Obsidian       #1A1A2E  — leather / stone body
+  Fel shadow     #0A1008  — depth
+  Inner burn     #B8FFB0  — center gleam
+
+All 12 icons in source/TheIllidari_{Name}.png:
+  [DONE] Collections       — fel horseshoe crest, warglaive tips
+  [DONE] PVP               — crossed warglaives on fel shield
+  [DONE] AdventureGuide    — burning fel libram
+  [DONE] Housing           — Black Temple fel arch
+  [DONE] GroupFinder       — spectral eye magnifier
+  [DONE] QuestTracker      — fel ! on demonic scroll
+  [DONE] AchievementTracker — horned fel trophy chalice
+  [DONE] Talents           — rune spellbook + fel star
+  [DONE] Character         — blindfold mask on fel disc
+  [DONE] Guild             — Illidari tabard + horn crest
+  [DONE] Social            — fel speech bubbles, horned silhouettes
+  [DONE] GameMenu          — obsidian cog, spectral eye center

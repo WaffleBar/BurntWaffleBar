@@ -1,0 +1,19 @@
+Frozen Waffle — Style Mockups
+==============================
+
+Direction: Start from Burnt Waffle icon compositions (waffle-grid texture,
+same silhouettes) and re-theme molten char/orange into ice, frost, and
+cold cyan glow.
+
+Mockups (review in mockups/):
+  Collections.png      — icy horseshoe paw
+  GroupFinder.png      — frosted magnifying glass + group
+  GameMenu.png         — frozen gear waffle
+  PVP.png              — ice waffle + crossed frost swords
+  Character.png        — frost waffle disc + spartan helm
+
+Remaining to generate if approved:
+  AdventureGuide, Housing, QuestTracker, AchievementTracker,
+  Talents, Guild, Social
+
+After approval, full set goes into this folder as production PNGs.

@@ -1,0 +1,19 @@
+Spooky Waffle theme
+=====================
+
+Haunted Halloween variants of the Burnt Waffle icon set — same compositions,
+spooky purple shadows and sickly green glow. Waffle grid is a subtle accent
+only (not a busy full-surface pattern) so icon silhouettes stay readable.
+One small accent per icon (ghost, raven, or bat).
+
+Source art: AI-generated from Burnt Waffle references (1536×1024), then
+post-processed via tools/ProcessSpookyIcons.cs:
+  - Scale-to-fit within 256×256 at 90%
+  - Key near-pure-black background to transparent
+
+Raw sources: source/SpookyWaffle_{Name}.png
+Production icons: this folder
+
+Files: Collections.png … GameMenu.png (standard micro menu names)
+
+Select in /bw under Icon Theme → Spooky Waffle.

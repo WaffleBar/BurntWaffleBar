@@ -1,0 +1,27 @@
+The Paladin theme
+=================
+
+Modern retail WoW Paladin identity — Holy Light spell fantasy (gold, silver,
+soft white radiance) with the official class-pink UI accent (#F48CBA) on hover
+and clock rim. Martial plate readability; NO waffle grid or breakfast texture.
+
+Visual pillars (Dragonflight / The War Within era):
+  - Holy gold highlights (#FFE8A8 → #FFFFFF)
+  - Polished silver / platinum midtones
+  - Cool slate-blue shadows (not muddy brown)
+  - Subtle class-pink gleam on brightest rim pixels (raid-frame recognition)
+  - Templar cross, libram, helm, and shield motifs — not food textures
+
+Source art: AI-generated Paladin micro-menu icons (square, black background).
+
+Pipeline:
+  tools/ProcessThePaladinIcons.cs
+    Raw:  source/ThePaladin_{Name}.png
+    Out:  this folder / {Name}.png
+    - 512px supersample → premium alpha material bake → 256px downscale
+    - Silhouette-driven platinum/gold shading (ignores cheap source colors)
+    - Strips outer glow, bakes dark UI rim + top-left gleam
+
+Files: Collections.png … GameMenu.png (standard micro menu names)
+
+Select in /bw → Icon Theme → The Paladin.

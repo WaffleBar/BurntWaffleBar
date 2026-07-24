@@ -1,0 +1,26 @@
+The Paladin — Icon Set (v1 complete)
+====================================
+
+Direction: Pure modern Holy Paladin micro-menu icons. NO waffle grid or
+breakfast texture — plate silver, holy gold, Templar accents only.
+
+Palette:
+  Class UI pink  #F48CBA  — hover glow, clock rim
+  Holy gold      #FFD978  — spell highlights
+  Silver plate   #C8D4E8  — body metal
+  Shadow slate   #1A2238  — depth
+  Light core     #FFF8EE  — center gleam
+
+All 12 icons generated in source/ThePaladin_{Name}.png:
+  [DONE] Collections       — silver horseshoe crest, Templar cross
+  [DONE] PVP               — crossed holy blades on plate shield
+  [DONE] AdventureGuide    — open radiant libram
+  [DONE] Housing           — sanctum chapel arch
+  [DONE] GroupFinder       — magnifying glass, grouped knights
+  [DONE] QuestTracker      — gold ! on silver scroll plaque
+  [DONE] AchievementTracker — laurel trophy chalice
+  [DONE] Talents           — spellbook + holy star
+  [DONE] Character         — greathelm on radiant disc
+  [DONE] Guild             — tabard banner + shield crest
+  [DONE] Social            — speech bubbles, armored silhouettes
+  [DONE] GameMenu          — silver gear cog, holy star center

@@ -1,0 +1,17 @@
+Frozen Waffle theme
+====================
+
+Premium frozen variants of the Burnt Waffle icon set — same compositions
+and waffle-grid motifs, re-themed with ice, frost, and cold cyan glow.
+Warm accent colors (golden waffle tan, bronze, amber, quest yellow) add
+depth and layering against the icy palette (see Housing as reference).
+
+Source art: AI-generated from Burnt Waffle references (1536×1024), then
+post-processed via tools/ProcessFrozenIcons.cs:
+  - Scale-to-fit within 256×256 at 90% (preserves full composition)
+  - Key near-pure-black background to transparent (keeps dark ice shadows)
+
+Files: Collections.png … GameMenu.png (standard micro menu names)
+
+Raw sources: source/FrozenWaffle_{Name}.png
+Production icons: this folder
