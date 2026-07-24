@@ -1,0 +1,11 @@
+ignore:
+  - .git
+  - .github
+  - .gitignore
+  - .pkgmeta
+  - tools
+  - "*.zip"
+  - Media/**/source
+  - Media/**/mockups
+  - Media/**/reference-bar.png
+  - Media/**/preview-28px.png

@@ -24,6 +24,18 @@ A compact custom micro menu bar for World of Warcraft retail, with multiple icon
 - **Settings:** Esc → Options → AddOns → **BurntWaffleBar**, or type `/bwb` or `/burntwafflebar`
 - **Reposition:** Esc → **Edit Mode**, select **BurntWaffleBar**, and drag it. Positions save per Edit Mode layout.
 
+## WoWUp
+
+BurntWaffleBar is distributed via **GitHub releases** for [WoWUp](https://wowup.io):
+
+1. In WoWUp, click **Get Addons → Install from URL**
+2. Paste: `https://github.com/WaffleBar/BurntWaffleBar`
+3. WoWUp installs from the latest tagged release and keeps the addon updated
+
+The repo must stay **public** with tagged releases that include a packaged zip (created automatically by GitHub Actions when you push a `v*` tag).
+
+**GitHub topics** (for WoWUp Hub categories): add `wow-addon` and `action-bars` under your repo’s **About → Topics** on GitHub.
+
 ## Development
 
 The `tools/` folder contains C# scripts used to process source icon PNGs into production assets. They are optional for running the addon in-game.
