@@ -38,8 +38,8 @@ The repo must stay **public** with tagged releases that include a packaged zip (
 
 WowUp Hub shows a **Previews** gallery from a `.previews/` folder in your repo ([Hub docs](https://wowup.io/guide/wowup/hub#image-previews)). When you tag a release, Hub snapshots whatever PNG/JPG files are in `.previews/` on that branch.
 
-1. Add or replace screenshots in **`.previews/`** (in-game shots work best; `01-…`, `02-…` naming keeps order sensible).
-2. Optionally regenerate icon-strip fallbacks: run `tools\MakeWowUpPreviews.exe` (see `.previews/README.md`).
+1. Add or replace screenshots in **`.previews/`** (in-game shots work best; `01-…`, `02-…` naming keeps order sensible). The repo ships five generated mockups — swap in real `/screenshot` captures when you have them.
+2. Regenerate mockups: run `tools\MakeWowUpPreviews.exe` (see `.previews/README.md`).
 3. Commit, push to `main`, then tag a release (e.g. `v2.4.2`). WowUp picks up the new gallery on the next Hub sync after that release.
 
 The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview**. Use `.github/social-preview.png` from this repo (1280×1280 square). WowUp Hub reads that image, not the addon icon.

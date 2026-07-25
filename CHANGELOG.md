@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.9] — 2026-07-25
+
+### Changed
+- Replaced theme icon-strip WowUp previews with five in-game style gallery mockups (bar, class themes, Edit Mode, settings, clock/queue)
+
 ## [2.6.8] — 2026-07-25
 
 ### Changed

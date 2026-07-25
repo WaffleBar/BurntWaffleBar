@@ -13,12 +13,15 @@ This folder is **not** packaged into the WoW addon zip (see `.pkgmeta`).
 
 ## Files
 
-- `01-addon-icon.png` — addon icon (BWB monogram)
-- `02-the-paladin.png` … `14-the-evoker.png` — theme bar strips (auto-generated)
+- `01-bar-ingame.png` — micro menu bar in a WoW-style UI scene (The Paladin theme)
+- `02-class-themes-ingame.png` — Paladin, Illidari, and Warrior theme comparison
+- `03-edit-mode-ingame.png` — Edit Mode selection outline on the bar
+- `04-settings-ingame.png` — Options panel mockup for BurntWaffleBar settings
+- `05-clock-queue-ingame.png` — clock above the bar plus queue-eye placement
 
-After adding or changing images, commit to `main` and push a **new version tag** so WowUp Hub re-indexes the gallery. Previews are snapshotted at tag time only.
+Replace any shot with your own in-game screenshots anytime. Commit and tag a new release so WowUp Hub re-indexes the gallery.
 
-## Regenerate gallery
+## Regenerate mockups
 
 ```powershell
 $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
