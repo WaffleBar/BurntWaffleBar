@@ -42,7 +42,7 @@ WowUp Hub shows a **Previews** gallery from a `.previews/` folder in your repo (
 2. Optionally regenerate icon-strip fallbacks: run `tools\MakeWowUpPreviews.exe` (see `.previews/README.md`).
 3. Commit, push to `main`, then tag a release (e.g. `v2.4.2`). WowUp picks up the new gallery on the next Hub sync after that release.
 
-The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview** (recommended 1280×640).
+The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview**. Use `.github/social-preview.png` from this repo (1280×1280 square). WowUp Hub reads that image, not the addon icon.
 
 This folder is excluded from the addon zip via `.pkgmeta`, so previews never ship to players' `Interface\AddOns` folder.
 

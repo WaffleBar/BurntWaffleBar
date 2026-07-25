@@ -82,44 +82,121 @@ public static class MakeWowUpPreviews
         string githubDir = Path.Combine(root, ".github");
         Directory.CreateDirectory(githubDir);
         string outputPath = Path.Combine(githubDir, "social-preview.png");
+        string themeBarPath = Path.Combine(root, "Media", "Themes", "ThePaladin");
 
-        const int width = 1280;
-        const int height = 640;
+        const int size = 1280;
 
-        using (var icon = new Bitmap(addonIconPath))
-        using (var banner = new Bitmap(width, height, PixelFormat.Format32bppArgb))
+        using (var banner = new Bitmap(size, size, PixelFormat.Format32bppArgb))
         using (var g = Graphics.FromImage(banner))
         {
-            g.Clear(Color.Black);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
-            float iconSize = 320f;
-            float scale = Math.Min(iconSize / icon.Width, iconSize / icon.Height);
-            float drawWidth = icon.Width * scale;
-            float drawHeight = icon.Height * scale;
-            float x = (width - drawWidth) / 2f;
-            float y = (height - drawHeight) / 2f - 20f;
-            g.DrawImage(icon, x, y, drawWidth, drawHeight);
-
-            using (var titleFont = new Font("Segoe UI", 42f, FontStyle.Bold, GraphicsUnit.Pixel))
-            using (var subtitleFont = new Font("Segoe UI", 22f, FontStyle.Regular, GraphicsUnit.Pixel))
-            using (var titleBrush = new SolidBrush(Color.FromArgb(255, 245, 245, 245)))
-            using (var subtitleBrush = new SolidBrush(Color.FromArgb(255, 180, 180, 180)))
+            using (var bg = new LinearGradientBrush(
+                new Rectangle(0, 0, size, size),
+                Color.FromArgb(255, 8, 10, 14),
+                Color.FromArgb(255, 18, 14, 10),
+                90f))
             {
-                string title = "BurntWaffleBar";
-                string subtitle = "Custom micro menu bar for World of Warcraft";
-                SizeF titleSize = g.MeasureString(title, titleFont);
-                SizeF subtitleSize = g.MeasureString(subtitle, subtitleFont);
-                float titleY = y + drawHeight + 24f;
-                g.DrawString(title, titleFont, titleBrush, (width - titleSize.Width) / 2f, titleY);
-                g.DrawString(subtitle, subtitleFont, subtitleBrush, (width - subtitleSize.Width) / 2f, titleY + titleSize.Height + 8f);
+                g.FillRectangle(bg, 0, 0, size, size);
+            }
+
+            using (var glowPath = new GraphicsPath())
+            {
+                glowPath.AddEllipse(size * 0.12f, size * 0.38f, size * 0.76f, size * 0.34f);
+                using (var glowBrush = new PathGradientBrush(glowPath))
+                {
+                    glowBrush.CenterColor = Color.FromArgb(48, 255, 145, 64);
+                    glowBrush.SurroundColors = new[] { Color.FromArgb(0, 255, 145, 64) };
+                    g.FillPath(glowBrush, glowPath);
+                }
+            }
+
+            using (var icon = new Bitmap(addonIconPath))
+            {
+                float iconSize = 220f;
+                float scale = Math.Min(iconSize / icon.Width, iconSize / icon.Height);
+                float drawWidth = icon.Width * scale;
+                float drawHeight = icon.Height * scale;
+                float x = (size - drawWidth) / 2f;
+                float y = 150f;
+                g.DrawImage(icon, x, y, drawWidth, drawHeight);
+            }
+
+            DrawThemeBar(g, themeBarPath, size, 430f);
+
+            using (var titleFont = new Font("Segoe UI", 92f, FontStyle.Bold, GraphicsUnit.Pixel))
+            using (var subtitleFont = new Font("Segoe UI", 34f, FontStyle.Regular, GraphicsUnit.Pixel))
+            using (var detailFont = new Font("Segoe UI", 24f, FontStyle.Regular, GraphicsUnit.Pixel))
+            using (var creditFont = new Font("Segoe UI", 20f, FontStyle.Regular, GraphicsUnit.Pixel))
+            using (var titleBrush = new SolidBrush(Color.FromArgb(255, 248, 244, 238)))
+            using (var subtitleBrush = new SolidBrush(Color.FromArgb(255, 255, 168, 96)))
+            using (var detailBrush = new SolidBrush(Color.FromArgb(255, 170, 156, 140)))
+            {
+                DrawCentered(g, "BurntWaffleBar", titleFont, titleBrush, size, 700f);
+                DrawCentered(g, "Custom micro menu bar", subtitleFont, subtitleBrush, size, 810f);
+                DrawCentered(g, "Class themes  ·  Edit Mode  ·  Queue eye", detailFont, detailBrush, size, size - 72f);
+                DrawCentered(g, "By Waffle", creditFont, detailBrush, size, size - 40f);
             }
 
             banner.Save(outputPath, ImageFormat.Png);
         }
 
         Console.WriteLine("Wrote " + outputPath);
+    }
+
+    static void DrawCentered(Graphics g, string text, Font font, Brush brush, int width, float y)
+    {
+        SizeF size = g.MeasureString(text, font);
+        g.DrawString(text, font, brush, (width - size.Width) / 2f, y);
+    }
+
+    static void DrawThemeBar(Graphics g, string themeDir, int canvasWidth, float y)
+    {
+        const int iconSize = 72;
+        const int padding = 10;
+        int iconsToDraw = Math.Min(IconOrder.Length, 10);
+        int barWidth = iconsToDraw * iconSize + (iconsToDraw + 1) * padding;
+        float x = (canvasWidth - barWidth) / 2f;
+        var barRect = new RectangleF(x - 16f, y - 16f, barWidth + 32f, iconSize + padding * 2 + 32f);
+
+        using (var barPath = RoundedRect(barRect, 18f))
+        using (var barBrush = new SolidBrush(Color.FromArgb(210, 24, 20, 18)))
+        using (var barBorder = new Pen(Color.FromArgb(255, 88, 62, 42), 2f))
+        {
+            g.FillPath(barBrush, barPath);
+            g.DrawPath(barBorder, barPath);
+        }
+
+        g.SetClip(barRect);
+        for (int i = 0; i < iconsToDraw; i++)
+        {
+            string path = Path.Combine(themeDir, IconOrder[i] + ".png");
+            if (!File.Exists(path))
+                continue;
+
+            using (var icon = new Bitmap(path))
+            {
+                float drawX = x + padding + i * (iconSize + padding);
+                g.DrawImage(icon, drawX, y + padding, iconSize, iconSize);
+            }
+        }
+
+        g.ResetClip();
+    }
+
+    static GraphicsPath RoundedRect(RectangleF bounds, float radius)
+    {
+        var path = new GraphicsPath();
+        float d = radius * 2f;
+        path.AddArc(bounds.X, bounds.Y, d, d, 180, 90);
+        path.AddArc(bounds.Right - d, bounds.Y, d, d, 270, 90);
+        path.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
+        path.AddArc(bounds.X, bounds.Bottom - d, d, d, 90, 90);
+        path.CloseFigure();
+        return path;
     }
 
     static void RenderThemeBar(string themesRoot, string previewsDir, string themeId, string fileSlug, string outputName)

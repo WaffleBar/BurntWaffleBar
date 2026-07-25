@@ -26,4 +26,4 @@ $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & "tools\MakeWowUpPreviews.exe" .
 ```
 
-Also writes `.github/social-preview.png` (1280×640) for GitHub / WowUp card art — upload it under repo **Settings → Social preview** if WowUp still shows your GitHub avatar.
+Also writes `.github/social-preview.png` (1280×1280 square) for GitHub / WowUp card art — upload it under repo **Settings → Social preview** if WowUp still shows a broken image or your GitHub avatar.

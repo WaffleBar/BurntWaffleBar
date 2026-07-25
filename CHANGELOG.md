@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.8] — 2026-07-25
+
+### Changed
+- Square 1280×1280 social preview for GitHub / WowUp Hub card art (upload under repo **Settings → Social preview**)
+
 ## [2.6.7] — 2026-07-25
 
 ### Changed
