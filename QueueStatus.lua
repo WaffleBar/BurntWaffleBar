@@ -5,6 +5,7 @@ local queueScale = 1
 local hooksInstalled = false
 local ignoringPointHook = false
 local managingQueueStatus = false
+local savedUpdatePosition
 
 -- Group Finder art: magnifying-glass lens center/size in normalized slot space.
 local LENS_OFFSET_X = -0.10
@@ -90,10 +91,39 @@ local function ComputeQueueLensPlacement(anchor)
     return offsetX, offsetY, scale
 end
 
+local function RestoreUpdatePositionOverride()
+    if not savedUpdatePosition or not IsQueueStatusAvailable() then
+        return
+    end
+
+    QueueStatusButton.UpdatePosition = savedUpdatePosition
+    savedUpdatePosition = nil
+end
+
+local function InstallUpdatePositionOverride()
+    if savedUpdatePosition or not IsQueueStatusAvailable() or not QueueStatusButton.UpdatePosition then
+        return
+    end
+
+    savedUpdatePosition = QueueStatusButton.UpdatePosition
+    QueueStatusButton.UpdatePosition = function(self, microMenuPosition, isMenuHorizontal)
+        if managingQueueStatus then
+            if QueueStatusButton:IsShown() then
+                ApplyQueueStatusLayout()
+            end
+            return
+        end
+
+        return savedUpdatePosition(self, microMenuPosition, isMenuHorizontal)
+    end
+end
+
 local function RestoreQueueStatusButton()
     if not IsQueueStatusAvailable() then
         return
     end
+
+    RestoreUpdatePositionOverride()
 
     ignoringPointHook = true
     local parent = MicroMenuContainer or MainMenuBar or UIParent
@@ -101,7 +131,7 @@ local function RestoreQueueStatusButton()
     QueueStatusButton:ClearAllPoints()
     QueueStatusButton:SetScale(1)
     if QueueStatusButton.UpdatePosition then
-        QueueStatusButton:UpdatePosition()
+        pcall(QueueStatusButton.UpdatePosition, QueueStatusButton)
     end
     ignoringPointHook = false
 end
@@ -188,18 +218,7 @@ local function InstallQueueStatusHooks()
         end
     end)
 
-    if QueueStatusButton.UpdatePosition then
-        hooksecurefunc(QueueStatusButton, "UpdatePosition", function()
-            if not managingQueueStatus then
-                return
-            end
-            C_Timer.After(0, function()
-                if QueueStatusButton:IsShown() then
-                    ApplyQueueStatusLayout()
-                end
-            end)
-        end)
-    end
+    InstallUpdatePositionOverride()
 end
 
 function ns.UpdateQueueStatusAnchor()
@@ -226,10 +245,6 @@ function ns.UpdateQueueStatusAnchor()
 
     managingQueueStatus = true
     queueAnchor = anchor
-
-    if QueueStatusButton.UpdatePosition then
-        QueueStatusButton:UpdatePosition()
-    end
 
     if QueueStatusButton:IsShown() then
         ApplyQueueStatusLayout()

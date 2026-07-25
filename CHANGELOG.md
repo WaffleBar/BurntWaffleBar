@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.1] — 2026-07-25
+
+### Fixed
+- Lua error when repositioning the queue eye with the Blizzard micro menu hidden (`UpdatePosition` no longer runs without micro-menu context)
+
 ## [2.6.0] — 2026-07-25
 
 ### Removed
