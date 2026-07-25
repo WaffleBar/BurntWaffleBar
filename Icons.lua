@@ -5,8 +5,6 @@ local ICON_EXTENSIONS = { ".png", ".tga" }
 local ICON_TEXTURE_SMALL_THRESHOLD = 62
 
 local THEME_ICON_EXTENSIONS = {
-    Pristine = { ".png" },
-    FrozenWaffle = { ".png" },
     ThePaladin = { ".png" },
     TheIllidari = { ".png" },
 }
@@ -59,17 +57,6 @@ local BUTTON_ICON_FILES = {
     Guild = "Guild",
     Social = "Social",
     GameMenu = "GameMenu",
-}
-
-local FROZEN_WAFFLE_CLOCK_OUTLINE = {
-    { x = 1, y = 0, alpha = 0.85 },
-    { x = -1, y = 0, alpha = 0.85 },
-    { x = 0, y = 1, alpha = 0.85 },
-    { x = 0, y = -1, alpha = 0.85 },
-    { x = 1, y = 1, alpha = 0.72 },
-    { x = -1, y = 1, alpha = 0.72 },
-    { x = 1, y = -1, alpha = 0.72 },
-    { x = -1, y = -1, alpha = 0.72 },
 }
 
 local THE_PALADIN_CLOCK_OUTLINE = {
@@ -144,78 +131,6 @@ local CLOCK_SIZE_RATIO = 0.8
 local CLOCK_GAP_RATIO = 0.08
 
 ns.iconThemes = {
-    BurntWaffle = {
-        label = "Burnt Waffle",
-        root = ADDON_ROOT .. "Media\\Themes\\BurntWaffle\\",
-        icons = BUTTON_ICON_FILES,
-        clockStyle = {
-            color = { 1, 0.85, 0.45 },
-            font = "Fonts\\FRIZQT__.TTF",
-            sizeRatio = CLOCK_SIZE_RATIO,
-            gapRatio = CLOCK_GAP_RATIO,
-            flags = "OUTLINE",
-            shadow = false,
-        },
-        hoverStyle = {
-            scale = 1.12,
-            brightness = 1.18,
-            duration = 0.12,
-            glowColor = { 1, 0.92, 0.28 },
-            glowAlpha = 0.78,
-            glowScale = 1.24,
-            glowOuterScale = 1.42,
-            glowOuterAlpha = 0.42,
-        },
-    },
-    Pristine = {
-        label = "Pristine",
-        root = ADDON_ROOT .. "Media\\Themes\\Pristine\\",
-        icons = BUTTON_ICON_FILES,
-        clockStyle = {
-            color = { 1, 1, 1 },
-            font = ADDON_ROOT .. "Media\\Fonts\\VarelaRound-Regular.ttf",
-            sizeRatio = CLOCK_SIZE_RATIO,
-            gapRatio = CLOCK_GAP_RATIO,
-            flags = "",
-            useClockDigits = true,
-        },
-        hoverStyle = {
-            scale = 1.12,
-            brightness = 1.18,
-            duration = 0.12,
-            glowColor = { 0.92, 0.96, 1.0 },
-            glowAlpha = 0.62,
-            glowScale = 1.22,
-            glowOuterScale = 1.38,
-            glowOuterAlpha = 0.34,
-        },
-    },
-    FrozenWaffle = {
-        label = "Frozen Waffle",
-        root = ADDON_ROOT .. "Media\\Themes\\FrozenWaffle\\",
-        icons = BUTTON_ICON_FILES,
-        clockStyle = {
-            color = { 0.82, 0.93, 1.0 },
-            font = ADDON_ROOT .. "Media\\Fonts\\VarelaRound-Regular.ttf",
-            sizeRatio = CLOCK_SIZE_RATIO,
-            gapRatio = CLOCK_GAP_RATIO,
-            flags = "",
-            outline = {
-                color = { 0.05, 0.12, 0.22 },
-                offsets = FROZEN_WAFFLE_CLOCK_OUTLINE,
-            },
-        },
-        hoverStyle = {
-            scale = 1.10,
-            brightness = 1.22,
-            duration = 0.12,
-            glowColor = { 0.28, 0.88, 0.82 },
-            glowAlpha = 0.76,
-            glowScale = 1.24,
-            glowOuterScale = 1.44,
-            glowOuterAlpha = 0.40,
-        },
-    },
     ThePaladin = {
         label = "The Paladin",
         root = ADDON_ROOT .. "Media\\Themes\\ThePaladin\\",
@@ -378,9 +293,6 @@ ns.iconThemes = {
 }
 
 ns.iconThemeOrder = {
-    "BurntWaffle",
-    "Pristine",
-    "FrozenWaffle",
     "ThePaladin",
     "TheIllidari",
     "TheWarrior",
@@ -424,10 +336,10 @@ function ns.GetHoverStyle()
     end
 
     return {
-        scale = 1.12,
-        brightness = 1.18,
+        scale = 1.10,
+        brightness = 1.22,
         duration = 0.12,
-        glowColor = { 1, 0.92, 0.28 },
+        glowColor = { 0.92, 0.96, 1.0 },
         glowAlpha = 0.72,
         glowScale = 1.22,
         glowOuterScale = 1.40,
@@ -459,19 +371,14 @@ function ns.GetClockStyle()
 end
 
 function ns.GetClockDigitLayout()
-    local _, themeId = ns.GetActiveIconTheme()
-    if themeId == "Pristine" and ns.pristineClockDigitLayout then
-        return ns.pristineClockDigitLayout
-    end
 end
 
 function ns.ClockUsesDigitGlass()
-    local style = ns.GetClockStyle()
-    return style.useClockDigits and ns.GetClockDigitLayout() ~= nil
+    return false
 end
 
 function ns.ClockUsesGlassTheme()
-    return ns.ClockUsesDigitGlass()
+    return false
 end
 
 local function ResolveTintComponent(value, fallback)

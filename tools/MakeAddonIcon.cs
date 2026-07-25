@@ -12,7 +12,7 @@ public static class MakeAddonIcon
     public static void Main(string[] args)
     {
         string root = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-        string sourcePath = Path.Combine(root, "Media", "Themes", "BurntWaffle", "GameMenu.png");
+        string sourcePath = Path.Combine(root, "Media", "Themes", "ThePaladin", "GameMenu.png");
         string outputPath = Path.Combine(root, "Media", "AddonIcon.png");
 
         if (!File.Exists(sourcePath))

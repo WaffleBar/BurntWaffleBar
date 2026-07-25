@@ -13,8 +13,8 @@ This folder is **not** packaged into the WoW addon zip (see `.pkgmeta`).
 
 ## Files
 
-- `01-burnt-waffle.png` … in-game or marketing shots (preferred)
-- `bar-burnt-waffle.png` … auto-generated icon strip (fallback / supplement)
+- `01-the-paladin.png` … in-game or marketing shots (preferred)
+- `bar-the-paladin.png` … auto-generated icon strip (fallback / supplement)
 
 After adding or changing images, commit to `main` and push a new version tag (e.g. `v2.4.2`) so WowUp Hub re-indexes the gallery.
 

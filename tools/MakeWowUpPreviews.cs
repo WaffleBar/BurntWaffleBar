@@ -15,9 +15,6 @@ public static class MakeWowUpPreviews
 
     static readonly Dictionary<string, string> ThemeLabels = new Dictionary<string, string>
     {
-        { "BurntWaffle", "burnt-waffle" },
-        { "Pristine", "pristine" },
-        { "FrozenWaffle", "frozen-waffle" },
         { "ThePaladin", "the-paladin" },
         { "TheIllidari", "the-illidari" },
         { "TheWarrior", "the-warrior" },

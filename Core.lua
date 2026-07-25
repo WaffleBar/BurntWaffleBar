@@ -4,7 +4,7 @@ ns.defaults = {
     enabled = true,
     hideNativeMenu = true,
     useClassTheme = true,
-    iconTheme = "BurntWaffle",
+    iconTheme = "ThePaladin",
     iconSize = 100,
     spacing = 2,
     posX = -50,
@@ -71,13 +71,21 @@ local function MergeDefaults(target, source)
     end
 end
 
-local function MigrateThemeId(themeId)
-    if themeId == "MinimalWhite" then
-        return "Pristine"
-    end
+local REMOVED_ICON_THEMES = {
+    BurntWaffle = true,
+    Pristine = true,
+    FrozenWaffle = true,
+    MinimalWhite = true,
+    ScaryWaffle = true,
+    SpookyWaffle = true,
+}
 
-    if themeId == "ScaryWaffle" or themeId == "SpookyWaffle" then
-        return "BurntWaffle"
+local function MigrateThemeId(themeId, db)
+    if REMOVED_ICON_THEMES[themeId] then
+        if db and db.useClassTheme ~= false and ns.GetClassThemeForPlayer then
+            return ns.GetClassThemeForPlayer() or ns.defaults.iconTheme
+        end
+        return ns.defaults.iconTheme
     end
 
     if themeId == "Blizzard" or not ns.iconThemes or not ns.iconThemes[themeId] then
@@ -88,7 +96,7 @@ local function MigrateThemeId(themeId)
 end
 
 local function MigrateThemeSettings(db)
-    db.iconTheme = MigrateThemeId(db.iconTheme)
+    db.iconTheme = MigrateThemeId(db.iconTheme, db)
 
     if db.clockFont and (not ns.clockFonts or not ns.clockFonts[db.clockFont]) then
         db.clockFont = ns.defaults.clockFont

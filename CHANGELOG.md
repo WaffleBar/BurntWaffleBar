@@ -2,6 +2,15 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.0] — 2026-07-25
+
+### Removed
+- Burnt Waffle, Frozen Waffle, and Pristine icon theme packs (class and specialty themes remain)
+- Pristine glass clock digit rendering and related tooling/assets
+
+### Changed
+- Default manual theme fallback is now The Paladin; removed legacy theme IDs migrate to the player's class theme when auto class themes are enabled
+
 ## [2.5.13] — 2026-07-25
 
 ### Fixed
