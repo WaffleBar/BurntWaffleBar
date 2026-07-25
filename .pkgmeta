@@ -9,4 +9,5 @@ ignore:
   - Media/**/source
   - Media/**/mockups
   - Media/**/reference-bar.png
-  - Media/**/preview-28px.png
+  - Media/icon-concepts
+  - Media/AddonIconSource.png

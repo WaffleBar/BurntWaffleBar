@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.5] — 2026-07-25
+
+### Changed
+- New addon icon: BWB monogram on black (replaces legacy waffle artwork)
+
 ## [2.6.4] — 2026-07-25
 
 ### Fixed
