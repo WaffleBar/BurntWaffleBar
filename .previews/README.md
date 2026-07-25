@@ -13,15 +13,17 @@ This folder is **not** packaged into the WoW addon zip (see `.pkgmeta`).
 
 ## Files
 
-- `01-the-paladin.png` … in-game or marketing shots (preferred)
-- `bar-the-paladin.png` … auto-generated icon strip (fallback / supplement)
+- `01-addon-icon.png` — addon icon (BWB monogram)
+- `02-the-paladin.png` … `14-the-evoker.png` — theme bar strips (auto-generated)
 
-After adding or changing images, commit to `main` and push a new version tag (e.g. `v2.4.2`) so WowUp Hub re-indexes the gallery.
+After adding or changing images, commit to `main` and push a **new version tag** so WowUp Hub re-indexes the gallery. Previews are snapshotted at tag time only.
 
-## Regenerate icon-bar fallbacks
+## Regenerate gallery
 
 ```powershell
 $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /out:"tools\MakeWowUpPreviews.exe" "tools\MakeWowUpPreviews.cs"
 & "tools\MakeWowUpPreviews.exe" .
 ```
+
+Also writes `.github/social-preview.png` (1280×640) for GitHub / WowUp card art — upload it under repo **Settings → Social preview** if WowUp still shows your GitHub avatar.

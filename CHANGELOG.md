@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.6] — 2026-07-25
+
+### Changed
+- Regenerated WowUp Hub preview gallery (BWB icon + numbered theme bar strips); removed legacy waffle theme preview images
+
 ## [2.6.5] — 2026-07-25
 
 ### Changed
