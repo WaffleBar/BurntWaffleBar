@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.5.2] — 2026-07-25
+
+### Fixed
+- `Fonts.xml` wraps custom fonts in `<Member alphabet="roman">` for Midnight (12.0) XML schema
+
 ## [2.1.0] — 2026-07-24
 
 ### Changed
