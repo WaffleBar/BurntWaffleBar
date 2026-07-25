@@ -1,12 +1,10 @@
 The Druid theme
 ===============
 
-Retail WoW Druid class identity — Nature's balance — living bark, lunar cycles, feral claws, emerald dream.
+Retail WoW Druid — living bark, amber moonlight, moon silver, forest green.
 
-Procedurally drawn micro-menu icons with unique Druid
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheDruid_{Name}.png
   Out:  this folder / {Name}.png
 

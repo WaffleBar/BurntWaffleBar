@@ -48,7 +48,7 @@ function ns.ApplyMenuPosition(frame)
         return
     end
 
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     local lib = GetLibEditMode()
     local layoutName = GetActiveLayoutName(lib)
     local pos = GetLayoutPosition(db, layoutName)
@@ -63,7 +63,7 @@ function ns.SyncMenuPositionFromSettings()
         return
     end
 
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     local layoutName = GetActiveLayoutName(lib)
     if not layoutName then
         return
@@ -79,7 +79,7 @@ function ns.SetupEditMode(frame)
         return false
     end
 
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     db.editModeLayouts = db.editModeLayouts or {}
 
     local default = GetLegacyPosition(db)

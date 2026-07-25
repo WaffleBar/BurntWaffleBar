@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -12,10 +13,30 @@ public static class MakeWowUpPreviews
         "AchievementTracker", "Talents", "Character", "Guild", "Social", "GameMenu",
     };
 
+    static readonly Dictionary<string, string> ThemeLabels = new Dictionary<string, string>
+    {
+        { "BurntWaffle", "burnt-waffle" },
+        { "Pristine", "pristine" },
+        { "FrozenWaffle", "frozen-waffle" },
+        { "ThePaladin", "the-paladin" },
+        { "TheIllidari", "the-illidari" },
+        { "TheWarrior", "the-warrior" },
+        { "TheHunter", "the-hunter" },
+        { "TheRogue", "the-rogue" },
+        { "ThePriest", "the-priest" },
+        { "TheShaman", "the-shaman" },
+        { "TheMage", "the-mage" },
+        { "TheWarlock", "the-warlock" },
+        { "TheMonk", "the-monk" },
+        { "TheDruid", "the-druid" },
+        { "TheDeathKnight", "the-death-knight" },
+        { "TheEvoker", "the-evoker" },
+    };
+
     public static void Main(string[] args)
     {
         string root = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-        string themeDir = Path.Combine(root, "Media", "Themes", "BurntWaffle");
+        string themesRoot = Path.Combine(root, "Media", "Themes");
         string previewsDir = Path.Combine(root, ".previews");
         Directory.CreateDirectory(previewsDir);
 
@@ -23,12 +44,25 @@ public static class MakeWowUpPreviews
         if (File.Exists(addonIcon))
         {
             File.Copy(addonIcon, Path.Combine(previewsDir, "addon-icon.png"), true);
+            Console.WriteLine("Copied addon-icon.png");
         }
 
+        foreach (KeyValuePair<string, string> entry in ThemeLabels)
+        {
+            RenderThemeBar(themesRoot, previewsDir, entry.Key, entry.Value);
+        }
+
+        Console.WriteLine("Wrote previews to " + previewsDir);
+    }
+
+    static void RenderThemeBar(string themesRoot, string previewsDir, string themeId, string fileSlug)
+    {
+        string themeDir = Path.Combine(themesRoot, themeId);
         const int iconSize = 64;
         const int padding = 8;
         int barWidth = IconOrder.Length * iconSize + (IconOrder.Length + 1) * padding;
         int barHeight = iconSize + padding * 2;
+        int drawn = 0;
 
         using (var bar = new Bitmap(barWidth, barHeight, PixelFormat.Format32bppArgb))
         using (var g = Graphics.FromImage(bar))
@@ -41,22 +75,25 @@ public static class MakeWowUpPreviews
             {
                 string path = Path.Combine(themeDir, IconOrder[i] + ".png");
                 if (!File.Exists(path))
-                {
-                    Console.WriteLine("Skip missing: " + path);
                     continue;
-                }
 
                 using (var icon = new Bitmap(path))
                 {
                     int x = padding + i * (iconSize + padding);
                     int y = padding;
                     g.DrawImage(icon, x, y, iconSize, iconSize);
+                    drawn++;
                 }
             }
 
-            bar.Save(Path.Combine(previewsDir, "bar-burnt-waffle.png"), ImageFormat.Png);
-        }
+            if (drawn == 0)
+            {
+                Console.WriteLine("Skip empty theme: " + themeId);
+                return;
+            }
 
-        Console.WriteLine("Wrote previews to " + previewsDir);
+            bar.Save(Path.Combine(previewsDir, "bar-" + fileSlug + ".png"), ImageFormat.Png);
+            Console.WriteLine("Wrote bar-" + fileSlug + ".png (" + drawn + " icons)");
+        }
     }
 }

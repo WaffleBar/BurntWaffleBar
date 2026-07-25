@@ -1,12 +1,10 @@
 The Priest theme
 ================
 
-Retail WoW Priest class identity — Holy light and shadow — sanctified silver, divine radiance, void whispers.
+Retail WoW Priest — sanctified silver, holy gold, white light, void shadow.
 
-Procedurally drawn micro-menu icons with unique Priest
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/ThePriest_{Name}.png
   Out:  this folder / {Name}.png
 

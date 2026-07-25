@@ -1,12 +1,10 @@
 The Evoker theme
 ================
 
-Retail WoW Evoker class identity — Dracthyr legacy — bronze hourglass, emerald life, azure breath, dragonflight magic.
+Retail WoW Evoker — dracthyr bronze scales, teal breath, emerald life, azure sky.
 
-Procedurally drawn micro-menu icons with unique Evoker
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheEvoker_{Name}.png
   Out:  this folder / {Name}.png
 

@@ -1,0 +1,27 @@
+The Death Knight — Icon Set (v2)
+==================================
+
+Direction: Premium Death Knight micro-menu icons. Runeforged steel,
+frost ice, bone ivory, blood rune accents — NOT monochromatic red wash.
+
+Palette (FOUR distinct materials — never merge into one hue):
+  Runeforged steel  #7A8B9A  — primary body metal, cool blue-grey
+  Frost ice         #B8E8FF  — blade edges, filigree highlights
+  Bone ivory        #F0E8DC  — skull teeth, bright specular gleam
+  Blood crimson     #B01020  — SMALL rune glows, gem centers ONLY
+  Shadow slate      #0A0A12  — depth, blue-black recesses
+  Class crimson     #C41E3A  — thin outer clock rim / hover accent
+
+All 12 icons in source/TheDeathKnight_{Name}.png:
+  Collections       — steel horseshoe crest, bone paw, frost filigree
+  PVP               — crossed runeblades on frost shield, blood runes
+  AdventureGuide    — unholy tome, ivory pages, steel binding
+  Housing           — Icecrown citadel arch, frost window glow
+  GroupFinder       — magnifier, DK silhouettes in frost light
+  QuestTracker      — blood crimson ! on bone scroll plaque
+  AchievementTracker — steel trophy chalice, frost laurels
+  Talents           — rune spellbook, frost star sigil
+  Character         — horned DK greathelm on icy disc
+  Guild             — Scourge tabard, steel shield crest
+  Social            — speech bubbles, armored DK silhouettes
+  GameMenu          — runeforged gear cog, skull center

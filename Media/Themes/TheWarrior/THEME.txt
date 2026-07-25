@@ -1,12 +1,11 @@
 The Warrior theme
 =================
 
-Retail WoW Warrior class identity — Iron and honor — battered plate, crimson war paint, Alliance steel and Horde fury.
+Retail WoW Warrior — steel plate, bronze trim, leather, crimson war accents.
 
-Procedurally drawn micro-menu icons with unique Warrior
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(color-preserving pipeline — no harmonization wash).
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheWarrior_{Name}.png
   Out:  this folder / {Name}.png
 

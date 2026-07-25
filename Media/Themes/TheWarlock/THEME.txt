@@ -1,12 +1,10 @@
 The Warlock theme
 =================
 
-Retail WoW Warlock class identity — Fel and shadow — soul shards, demonic contracts, green fel fire, void purple.
+Retail WoW Warlock — dark slate, fel green, void purple, soul shard teal.
 
-Procedurally drawn micro-menu icons with unique Warlock
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheWarlock_{Name}.png
   Out:  this folder / {Name}.png
 

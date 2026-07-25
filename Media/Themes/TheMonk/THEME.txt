@@ -1,12 +1,10 @@
 The Monk theme
 ==============
 
-Retail WoW Monk class identity — Inner harmony — jade mists, brew barrels, Pandaren scrolls, chi energy.
+Retail WoW Monk — jade stone, gold leaf, parchment, chi white-gold glow.
 
-Procedurally drawn micro-menu icons with unique Monk
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheMonk_{Name}.png
   Out:  this folder / {Name}.png
 

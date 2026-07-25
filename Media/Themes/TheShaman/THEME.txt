@@ -1,12 +1,10 @@
 The Shaman theme
 ================
 
-Retail WoW Shaman class identity — Elements unleashed — storm totems, molten lava, tidal blue, ancestral spirits.
+Retail WoW Shaman — totem wood, lightning cyan, lava orange, tidal blue.
 
-Procedurally drawn micro-menu icons with unique Shaman
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheShaman_{Name}.png
   Out:  this folder / {Name}.png
 

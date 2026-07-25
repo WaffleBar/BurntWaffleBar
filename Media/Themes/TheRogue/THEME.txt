@@ -1,12 +1,10 @@
 The Rogue theme
 ===============
 
-Retail WoW Rogue class identity — Shadow and venom — obsidian daggers, poison vials, guild sigils, yellow-class stealth.
+Retail WoW Rogue — obsidian steel, dull gold, venom green accents.
 
-Procedurally drawn micro-menu icons with unique Rogue
-class props (weapons, emblems, armor) per button.
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs.
 
-Pipeline: tools/DrawClassThemeSources.cs + tools/ClassThemeBuilder.cs
   Raw:  source/TheRogue_{Name}.png
   Out:  this folder / {Name}.png
 

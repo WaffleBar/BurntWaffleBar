@@ -1,12 +1,16 @@
 local addonName, ns = ...
 
+local function DB()
+    return ns.GetDB()
+end
+
 local function RefreshMenu()
     if ns.RefreshMenu then
         ns.RefreshMenu()
     end
 end
 
-local function CreateCheckbox(category, key, label, tooltip)
+local function CreateCheckbox(category, key, label, tooltip, onChanged)
     local setting = Settings.RegisterProxySetting(
         category,
         key,
@@ -14,15 +18,18 @@ local function CreateCheckbox(category, key, label, tooltip)
         label,
         ns.defaults[key],
         function()
-            return BurntWaffleBarDB[key]
+            return DB()[key]
         end,
         function(value)
-            BurntWaffleBarDB[key] = value
+            DB()[key] = value
         end
     )
 
     local init = Settings.CreateCheckbox(category, setting, tooltip)
     setting:SetValueChangedCallback(function()
+        if onChanged then
+            onChanged()
+        end
         RefreshMenu()
     end)
     return init
@@ -36,10 +43,10 @@ local function CreateSlider(category, key, label, min, max, step, tooltip, forma
         label,
         ns.defaults[key],
         function()
-            return BurntWaffleBarDB[key]
+            return DB()[key]
         end,
         function(value)
-            BurntWaffleBarDB[key] = value
+            DB()[key] = value
         end
     )
 
@@ -79,10 +86,11 @@ local function CreateThemeDropdown(category)
         "Icon Theme",
         ns.defaults.iconTheme,
         function()
-            return BurntWaffleBarDB.iconTheme
+            return DB().iconTheme
         end,
         function(value)
-            BurntWaffleBarDB.iconTheme = value
+            DB().iconTheme = value
+            DB().useClassTheme = false
         end
     )
 
@@ -115,10 +123,10 @@ local function CreateClockFormatDropdown(category)
         "Clock Format",
         ns.defaults.clockFormat,
         function()
-            return BurntWaffleBarDB.clockFormat
+            return DB().clockFormat
         end,
         function(value)
-            BurntWaffleBarDB.clockFormat = value
+            DB().clockFormat = value
         end
     )
 
@@ -136,15 +144,57 @@ local function CreateClockFormatDropdown(category)
     return init
 end
 
+local function CreateClockFontDropdown(category)
+    local function GetClockFontOptions()
+        local container = Settings.CreateControlTextContainer()
+
+        for _, fontId in ipairs(ns.clockFontOrder or {}) do
+            local font = ns.clockFonts and ns.clockFonts[fontId]
+            if font then
+                container:Add(fontId, font.label)
+            end
+        end
+
+        return container:GetData()
+    end
+
+    local setting = Settings.RegisterProxySetting(
+        category,
+        "clockFont",
+        Settings.VarType.String,
+        "Clock Font",
+        ns.defaults.clockFont,
+        function()
+            return DB().clockFont
+        end,
+        function(value)
+            DB().clockFont = value
+        end
+    )
+
+    local init = Settings.CreateDropdown(
+        category,
+        setting,
+        GetClockFontOptions,
+        "Choose the clock typeface. Theme Default uses the font from your active icon theme."
+    )
+
+    setting:SetValueChangedCallback(function()
+        RefreshMenu()
+    end)
+
+    return init
+end
+
 local function GetClockTintColorComponents()
-    local color = BurntWaffleBarDB.clockTintColor or ns.defaults.clockTintColor
+    local color = DB().clockTintColor or ns.defaults.clockTintColor
     return color.r or 1, color.g or 1, color.b or 1
 end
 
 local function SetClockTintColor(r, g, b)
-    BurntWaffleBarDB.clockTintColor = { r = r, g = g, b = b, a = 1 }
-    if (BurntWaffleBarDB.clockTintStrength or 0) <= 0 then
-        BurntWaffleBarDB.clockTintStrength = 30
+    DB().clockTintColor = { r = r, g = g, b = b, a = 1 }
+    if (DB().clockTintStrength or 0) <= 0 then
+        DB().clockTintStrength = 30
     end
     RefreshMenu()
 end
@@ -191,7 +241,13 @@ local function InitializeSettings()
 
     local enabledInit = CreateCheckbox(category, "enabled", "Enable BurntWaffleBar", "Show the custom micro menu bar.")
     local hideNativeInit = CreateCheckbox(category, "hideNativeMenu", "Hide Blizzard Micro Menu", "Hide the default bottom menu while this addon is enabled.")
-    local tooltipsInit = CreateCheckbox(category, "showTooltips", "Show Icon Tooltips", "Show a tooltip when you hover over menu icons and the clock.")
+    local tooltipsInit = CreateCheckbox(category, "showTooltips", "Show Icon Tooltips", "Show the icon name when you hover over menu icons and the clock.")
+    local fadeInCombatInit = CreateCheckbox(category, "fadeInCombat", "Hide In Combat", "Hide the menu bar completely while you are in combat so it can't be clicked accidentally.")
+    local useClassThemeInit = CreateCheckbox(category, "useClassTheme", "Use Class Theme", "Automatically use the icon theme that matches this character's class.", function()
+        if DB().useClassTheme and ns.ApplyClassThemeIfEnabled then
+            ns.ApplyClassThemeIfEnabled()
+        end
+    end)
     local themeInit = CreateThemeDropdown(category)
 
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Buttons"))
@@ -206,56 +262,10 @@ local function InitializeSettings()
     CreateSlider(category, "iconSize", "Icon Size", 20, 100, 1, "Size of menu icons.")
     CreateSlider(category, "spacing", "Button Spacing", -25, 20, 1, "Space between buttons. Use negative values to overlap icons closer together.")
 
-    local function SetMenuPosition(key, value)
-        BurntWaffleBarDB[key] = value
-        if (key == "posX" or key == "posY") and ns.SyncMenuPositionFromSettings then
-            ns.SyncMenuPositionFromSettings()
-        end
-    end
-
-    local posXSetting = Settings.RegisterProxySetting(
-        category,
-        "posX",
-        Settings.VarType.Number,
-        "Horizontal Position",
-        ns.defaults.posX,
-        function()
-            return BurntWaffleBarDB.posX
-        end,
-        function(value)
-            SetMenuPosition("posX", value)
-        end
-    )
-    local posXOptions = Settings.CreateSliderOptions(-800, 800, 1)
-    local posXInit = Settings.CreateSlider(category, posXSetting, posXOptions, "Move the bar left or right.")
-    posXSetting:SetValueChangedCallback(function()
-        RefreshMenu()
-    end)
-
-    local posYSetting = Settings.RegisterProxySetting(
-        category,
-        "posY",
-        Settings.VarType.Number,
-        "Vertical Position",
-        ns.defaults.posY,
-        function()
-            return BurntWaffleBarDB.posY
-        end,
-        function(value)
-            SetMenuPosition("posY", value)
-        end
-    )
-    local posYOptions = Settings.CreateSliderOptions(-500, 200, 1)
-    local posYInit = Settings.CreateSlider(category, posYSetting, posYOptions, "Move the bar up or down.")
-    posYSetting:SetValueChangedCallback(function()
-        RefreshMenu()
-    end)
-
     if ns.HasEditModeSupport and ns.HasEditModeSupport() then
-        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Edit Mode"))
         layout:AddInitializer(CreateSettingsButtonInitializer(
+            "Bar Position",
             "Reposition in Edit Mode",
-            "Open Edit Mode",
             function()
                 if not InCombatLockdown() then
                     ShowUIPanel(EditModeManagerFrame)
@@ -289,88 +299,105 @@ local function InitializeSettings()
         return string.format("%d%%", value)
     end)
     local clockFormatInit = CreateClockFormatDropdown(category)
+    local clockFontInit = CreateClockFontDropdown(category)
 
     hideNativeInit:SetParentInitializer(enabledInit, function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled
     end)
     hideNativeInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled
     end)
 
     themeInit:SetParentInitializer(enabledInit, function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled
     end)
     themeInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled and DB().useClassTheme == false
+    end)
+
+    useClassThemeInit:SetParentInitializer(enabledInit, function()
+        return DB().enabled
+    end)
+    useClassThemeInit:AddShownPredicate(function()
+        return DB().enabled
     end)
 
     for _, init in ipairs(buttonInitializers) do
         init:SetParentInitializer(enabledInit, function()
-            return BurntWaffleBarDB.enabled
+            return DB().enabled
         end)
         init:AddShownPredicate(function()
-            return BurntWaffleBarDB.enabled
+            return DB().enabled
         end)
     end
 
     clockInit:SetParentInitializer(enabledInit, function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled
     end)
     clockInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled
+        return DB().enabled
     end)
 
     clockFormatInit:SetParentInitializer(clockInit, function()
-        return BurntWaffleBarDB.showClock
+        return DB().showClock
     end)
     clockFormatInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+        return DB().enabled and DB().showClock
+    end)
+
+    clockFontInit:SetParentInitializer(clockInit, function()
+        return DB().showClock
+    end)
+    clockFontInit:AddShownPredicate(function()
+        return DB().enabled
+            and DB().showClock
+            and not (ns.ClockUsesDigitGlass and ns.ClockUsesDigitGlass())
     end)
 
     clockSizeInit:SetParentInitializer(clockInit, function()
-        return BurntWaffleBarDB.showClock
+        return DB().showClock
     end)
     clockSizeInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+        return DB().enabled and DB().showClock
     end)
 
     clockSpacingInit:SetParentInitializer(clockInit, function()
-        return BurntWaffleBarDB.showClock
+        return DB().showClock
     end)
     clockSpacingInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+        return DB().enabled and DB().showClock
     end)
 
     clockPosXInit:SetParentInitializer(clockInit, function()
-        return BurntWaffleBarDB.showClock
+        return DB().showClock
     end)
     clockPosXInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+        return DB().enabled and DB().showClock
     end)
 
     clockPosYInit:SetParentInitializer(clockInit, function()
-        return BurntWaffleBarDB.showClock
+        return DB().showClock
     end)
     clockPosYInit:AddShownPredicate(function()
-        return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+        return DB().enabled and DB().showClock
     end)
 
     for _, init in ipairs({ clockTintColorInit, clockTintStrengthInit }) do
         init:SetParentInitializer(clockInit, function()
-            return BurntWaffleBarDB.showClock
+            return DB().showClock
         end)
         init:AddShownPredicate(function()
-            return BurntWaffleBarDB.enabled and BurntWaffleBarDB.showClock
+            return DB().enabled and DB().showClock
         end)
     end
 
     for _, init in ipairs({ clockOpacityInit, clockRimInit, clockGleamInit }) do
         init:SetParentInitializer(clockInit, function()
-            return BurntWaffleBarDB.showClock and ns.ClockUsesGlassTheme and ns.ClockUsesGlassTheme()
+            return DB().showClock and ns.ClockUsesGlassTheme and ns.ClockUsesGlassTheme()
         end)
         init:AddShownPredicate(function()
-            return BurntWaffleBarDB.enabled
-                and BurntWaffleBarDB.showClock
+            return DB().enabled
+                and DB().showClock
                 and ns.ClockUsesGlassTheme
                 and ns.ClockUsesGlassTheme()
         end)

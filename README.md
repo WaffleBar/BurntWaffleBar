@@ -34,6 +34,18 @@ BurntWaffleBar is on **WowUpHub** — search for **BurntWaffleBar** in WowUp’s
 
 The repo must stay **public** with tagged releases that include a packaged zip (created automatically by GitHub Actions when you push a `v*` tag).
 
+### Preview images (WowUp gallery)
+
+WowUp Hub shows a **Previews** gallery from a `.previews/` folder in your repo ([Hub docs](https://wowup.io/guide/wowup/hub#image-previews)). When you tag a release, Hub snapshots whatever PNG/JPG files are in `.previews/` on that branch.
+
+1. Add or replace screenshots in **`.previews/`** (in-game shots work best; `01-…`, `02-…` naming keeps order sensible).
+2. Optionally regenerate icon-strip fallbacks: run `tools\MakeWowUpPreviews.exe` (see `.previews/README.md`).
+3. Commit, push to `main`, then tag a release (e.g. `v2.4.2`). WowUp picks up the new gallery on the next Hub sync after that release.
+
+The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview** (recommended 1280×640).
+
+This folder is excluded from the addon zip via `.pkgmeta`, so previews never ship to players' `Interface\AddOns` folder.
+
 **GitHub-only installs:** If you installed via URL before Hub listing, some WowUp CF builds fail on *Update* for GitHub addons ([known bug](https://github.com/WowUp/WowUp.CF/issues/107)). Hub installs should update normally. If updates still fail, remove the addon and reinstall from search or URL, or add a GitHub token under WowUp → **Options → Addons**.
 
 If WoW is installed under `Program Files`, try running WowUp as administrator when updating.
@@ -71,6 +83,8 @@ $csc = "${env:WINDIR}\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 & $csc /nologo /out:"tools\MakeWowUpPreviews.exe" "tools\MakeWowUpPreviews.cs"
 & "tools\MakeWowUpPreviews.exe" .
 ```
+
+Drop in-game screenshots into `.previews/` before tagging a release; see `.previews/README.md`.
 
 ## Third-party libraries
 

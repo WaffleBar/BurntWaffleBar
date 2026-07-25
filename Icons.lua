@@ -2,6 +2,7 @@ local addonName, ns = ...
 
 local ADDON_ROOT = "Interface\\AddOns\\BurntWaffleBar\\"
 local ICON_EXTENSIONS = { ".png", ".tga" }
+local ICON_TEXTURE_SMALL_THRESHOLD = 62
 
 local THEME_ICON_EXTENSIONS = {
     Pristine = { ".png" },
@@ -27,6 +28,22 @@ local CLASS_THEME_IDS = {
 for _, themeId in ipairs(CLASS_THEME_IDS) do
     THEME_ICON_EXTENSIONS[themeId] = { ".png" }
 end
+
+ns.classThemeByClassFile = {
+    WARRIOR = "TheWarrior",
+    HUNTER = "TheHunter",
+    ROGUE = "TheRogue",
+    PRIEST = "ThePriest",
+    SHAMAN = "TheShaman",
+    MAGE = "TheMage",
+    WARLOCK = "TheWarlock",
+    MONK = "TheMonk",
+    DRUID = "TheDruid",
+    DEATHKNIGHT = "TheDeathKnight",
+    EVOKER = "TheEvoker",
+    PALADIN = "ThePaladin",
+    DEMONHUNTER = "TheIllidari",
+}
 
 local BUTTON_ICON_FILES = {
     Collections = "Collections",
@@ -379,7 +396,16 @@ ns.iconThemeOrder = {
 }
 
 function ns.GetActiveIconTheme()
-    local themeId = BurntWaffleBarDB and BurntWaffleBarDB.iconTheme or ns.defaults.iconTheme
+    local db = ns.GetDB and ns.GetDB() or {}
+    local themeId = db.iconTheme or ns.defaults.iconTheme
+
+    if db.useClassTheme ~= false then
+        local classTheme = ns.GetClassThemeForPlayer and ns.GetClassThemeForPlayer()
+        if classTheme then
+            themeId = classTheme
+        end
+    end
+
     local theme = ns.iconThemes[themeId]
 
     if not theme then
@@ -460,7 +486,7 @@ local function ResolveTintComponent(value, fallback)
 end
 
 function ns.GetClockTintColor(style)
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     local base = (style and style.color) or { 1, 1, 1 }
     local strength = (db.clockTintStrength or 0) / 100
     if strength <= 0 then
@@ -511,7 +537,15 @@ function ns.GetClockDigitTextureName(character)
     end
 end
 
-function ns.GetCustomIconPaths(buttonId, theme)
+function ns.GetIconTextureTier(iconSize)
+    iconSize = iconSize or (ns.GetDB and ns.GetDB().iconSize) or 100
+    if iconSize <= ICON_TEXTURE_SMALL_THRESHOLD then
+        return "small"
+    end
+    return "full"
+end
+
+function ns.GetCustomIconPaths(buttonId, theme, iconSize)
     theme = theme or select(1, ns.GetActiveIconTheme())
     if not theme or not theme.root then
         return {}
@@ -522,8 +556,12 @@ function ns.GetCustomIconPaths(buttonId, theme)
     local fileName = theme.icons[buttonId] or buttonId
     local paths = {}
     local extensions = THEME_ICON_EXTENSIONS[themeId or ""] or ICON_EXTENSIONS
+    local tier = ns.GetIconTextureTier(iconSize)
 
     for _, extension in ipairs(extensions) do
+        if tier == "small" then
+            paths[#paths + 1] = theme.root .. "small\\" .. fileName .. extension
+        end
         paths[#paths + 1] = theme.root .. fileName .. extension
     end
 
@@ -559,13 +597,13 @@ function ns.ApplyIconTexCoords(icon)
     end
 end
 
-function ns.ApplyCustomIcon(icon, buttonId)
+function ns.ApplyCustomIcon(icon, buttonId, iconSize)
     local theme, themeId = ns.GetActiveIconTheme()
     if not theme or not theme.root then
         return false
     end
 
-    for _, path in ipairs(ns.GetCustomIconPaths(buttonId, theme)) do
+    for _, path in ipairs(ns.GetCustomIconPaths(buttonId, theme, iconSize)) do
         if ProbeTexture(path) then
             icon:SetTexture(nil)
             icon:SetTexture(path)

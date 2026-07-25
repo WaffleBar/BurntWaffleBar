@@ -18,11 +18,11 @@ local function IsValidFrame(frame, frameType)
 end
 
 local function TooltipsEnabled()
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     return not db or db.showTooltips ~= false
 end
 
-local function ShowMenuTooltip(owner, title, subtitle)
+local function ShowMenuTooltip(owner, title)
     if not TooltipsEnabled() or not title or not owner then
         return
     end
@@ -31,9 +31,6 @@ local function ShowMenuTooltip(owner, title, subtitle)
     GameTooltip:ClearLines()
     GameTooltip:SetPoint("BOTTOM", owner, "TOP", 0, 4)
     GameTooltip:SetText(title, 1, 1, 1)
-    if subtitle and subtitle ~= "" then
-        GameTooltip:AddLine(subtitle, 0.82, 0.82, 0.82, true)
-    end
     GameTooltip:Show()
 end
 
@@ -112,13 +109,16 @@ local function ResolveClockFont(fontPath, fontSize, fontFlags)
     return CLOCK_FONT_FALLBACK, fontSize, fontFlags or ""
 end
 
-local function ConfigureCrispTexture(texture)
+local ICON_OUTLINE_COMPACT_THRESHOLD = 62
+
+local function ConfigureCrispTexture(texture, iconSize)
     if not texture then
         return
     end
 
+    local snapToGrid = not iconSize or iconSize <= ICON_OUTLINE_COMPACT_THRESHOLD
     if texture.SetSnapToPixelGrid then
-        pcall(texture.SetSnapToPixelGrid, texture, false)
+        pcall(texture.SetSnapToPixelGrid, texture, snapToGrid)
     end
 
     if texture.SetTexelSnappingBias then
@@ -130,6 +130,19 @@ local function SetTextureDrawOrder(texture, layer, subLevel)
     if texture and texture.SetDrawLayer then
         texture:SetDrawLayer(layer, subLevel)
     end
+end
+
+local function BuildCompactOutlineOffsets()
+    return {
+        { x = 1, y = 0, alpha = 0.88 },
+        { x = -1, y = 0, alpha = 0.88 },
+        { x = 0, y = 1, alpha = 0.88 },
+        { x = 0, y = -1, alpha = 0.88 },
+        { x = 1, y = 1, alpha = 0.62 },
+        { x = -1, y = 1, alpha = 0.62 },
+        { x = 1, y = -1, alpha = 0.62 },
+        { x = -1, y = -1, alpha = 0.62 },
+    }
 end
 
 local function BuildScaledOutlineOffsets(iconSize)
@@ -183,6 +196,18 @@ local function HideClockDigitTextures()
 end
 
 local function HideClockGlassLayers()
+    HideClockDigitTextures()
+end
+
+local function PrepareClockVisualMode(useDigitGlass)
+    if useDigitGlass then
+        HideClockOutlineLayers()
+        if menuFrame and menuFrame.clockText then
+            menuFrame.clockText:Hide()
+        end
+        return
+    end
+
     HideClockDigitTextures()
 end
 
@@ -258,7 +283,7 @@ local function ApplyClockDigitGlass(style, text)
         return
     end
 
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     local theme = select(1, ns.GetActiveIconTheme())
     local root = theme and theme.root
     if not root then
@@ -366,15 +391,18 @@ local function UpdateClockText()
         return
     end
 
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     if not db or not db.showClock then
         return
     end
 
     local text = FormatClockTime(db.clockFormat == "24")
     local style = ns.GetClockStyle and ns.GetClockStyle() or {}
+    local useDigitGlass = ns.ClockUsesDigitGlass and ns.ClockUsesDigitGlass()
 
-    if ns.ClockUsesDigitGlass and ns.ClockUsesDigitGlass() then
+    PrepareClockVisualMode(useDigitGlass)
+
+    if useDigitGlass then
         ApplyClockDigitGlass(style, text)
         return
     end
@@ -415,11 +443,14 @@ local function ApplyClockStyle()
         return
     end
 
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     local style = ns.GetClockStyle and ns.GetClockStyle() or {}
     local text = FormatClockTime(db.clockFormat == "24")
+    local useDigitGlass = ns.ClockUsesDigitGlass and ns.ClockUsesDigitGlass()
 
-    if ns.ClockUsesDigitGlass and ns.ClockUsesDigitGlass() then
+    PrepareClockVisualMode(useDigitGlass)
+
+    if useDigitGlass then
         ApplyClockDigitGlass(style, text)
         return
     end
@@ -437,6 +468,8 @@ local function ApplyClockStyle()
     local clockScale = (db.clockSize or 100) / 100
     local fontPath = style.font
     local fontFlags = style.flags or ""
+
+    fontPath, fontFlags = ns.ResolveClockFontOverride(fontPath, fontFlags)
 
     if not fontPath then
         if NumberFont_Outline_Med then
@@ -467,7 +500,7 @@ local function ApplyClockStyle()
 end
 
 local function GetClockGap()
-    local db = BurntWaffleBarDB or {}
+    local db = ns.GetDB() or {}
     return math.max(0, db.clockSpacing or 8)
 end
 
@@ -482,9 +515,7 @@ local function EnsureClockFrame()
         menuFrame.clockHolder:EnableMouse(true)
         menuFrame.clockHolder:SetFrameLevel(25)
         menuFrame.clockHolder:SetScript("OnEnter", function()
-            local db = BurntWaffleBarDB or {}
-            local formatLabel = db.clockFormat == "24" and "24-hour time" or "12-hour time"
-            ShowMenuTooltip(menuFrame.clockHolder, "Clock", formatLabel)
+            ShowMenuTooltip(menuFrame.clockHolder, "Clock")
         end)
         menuFrame.clockHolder:SetScript("OnLeave", HideMenuTooltip)
     end
@@ -500,7 +531,7 @@ end
 local function StartClockTicker()
     StopClockTicker()
 
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     if not db or not db.showClock then
         return
     end
@@ -856,7 +887,7 @@ local function BindButtonTooltip(btn, slot, def)
         if slot then
             SetSlotHovered(slot, true)
         end
-        ShowMenuTooltip(btn, def.tooltip or def.label, def.tooltipDesc)
+        ShowMenuTooltip(btn, def.tooltip or def.label)
     end)
     btn:SetScript("OnLeave", function()
         if slot then
@@ -966,7 +997,7 @@ local function ApplyIconOutline(slot, icon, iconSize)
         slot.outlineUnderlay:Hide()
     end
 
-    if style.dropShadow then
+    if style.dropShadow and iconSize > ICON_OUTLINE_COMPACT_THRESHOLD then
         if not slot.dropShadow then
             slot.dropShadow = content:CreateTexture(nil, "BACKGROUND")
         end
@@ -982,13 +1013,13 @@ local function ApplyIconOutline(slot, icon, iconSize)
         slot.dropShadow:SetPoint("CENTER", content, "CENTER", shadowOffsetX, shadowOffsetY)
         slot.dropShadow:SetSize(shadowSize, shadowSize)
         SyncTextureFromIcon(slot.dropShadow, icon)
-        ConfigureCrispTexture(slot.dropShadow)
+        ConfigureCrispTexture(slot.dropShadow, iconSize)
         slot.dropShadow:SetVertexColor(shadowColor[1], shadowColor[2], shadowColor[3], shadow.alpha or 0.40)
         SetTextureDrawOrder(slot.dropShadow, "BACKGROUND", -1)
         slot.dropShadow:Show()
     end
 
-    if style.softScale then
+    if style.softScale and iconSize > ICON_OUTLINE_COMPACT_THRESHOLD then
         if not slot.softOutline then
             slot.softOutline = content:CreateTexture(nil, "BACKGROUND")
             slot.softOutline:SetPoint("CENTER")
@@ -997,7 +1028,7 @@ local function ApplyIconOutline(slot, icon, iconSize)
         local softSize = drawSize * style.softScale
         slot.softOutline:SetSize(softSize, softSize)
         SyncTextureFromIcon(slot.softOutline, icon)
-        ConfigureCrispTexture(slot.softOutline)
+        ConfigureCrispTexture(slot.softOutline, iconSize)
         local softColor = style.color or { 0, 0, 0 }
         slot.softOutline:SetVertexColor(softColor[1], softColor[2], softColor[3], style.softAlpha or 0.3)
         SetTextureDrawOrder(slot.softOutline, "BACKGROUND", 0)
@@ -1007,7 +1038,9 @@ local function ApplyIconOutline(slot, icon, iconSize)
     end
 
     local offsets = style.offsets
-    if style.scaleOffsets then
+    if iconSize <= ICON_OUTLINE_COMPACT_THRESHOLD then
+        offsets = BuildCompactOutlineOffsets()
+    elseif style.scaleOffsets then
         offsets = BuildScaledOutlineOffsets(iconSize)
     end
 
@@ -1026,7 +1059,7 @@ local function ApplyIconOutline(slot, icon, iconSize)
             outline:SetPoint("CENTER", content, "CENTER", offset.x or 0, offset.y or 0)
             outline:SetSize(drawSize, drawSize)
             SyncTextureFromIcon(outline, icon)
-            ConfigureCrispTexture(outline)
+            ConfigureCrispTexture(outline, iconSize)
             local outlineColor = style.color or { 0, 0, 0 }
             outline:SetVertexColor(outlineColor[1], outlineColor[2], outlineColor[3], offset.alpha or 0.5)
             SetTextureDrawOrder(outline, outlineLayer, 1)
@@ -1041,8 +1074,8 @@ local function ApplyIconOutline(slot, icon, iconSize)
     SetTextureDrawOrder(icon, "ARTWORK", 2)
 end
 
-local function ApplyButtonIcon(icon, def)
-    if ns.ApplyCustomIcon and ns.ApplyCustomIcon(icon, def.id) then
+local function ApplyButtonIcon(icon, def, iconSize)
+    if ns.ApplyCustomIcon and ns.ApplyCustomIcon(icon, def.id, iconSize) then
         return true
     end
 
@@ -1106,10 +1139,10 @@ local function SetupButton(entry, def, iconSize)
     local outlineStyle = ns.GetIconOutlineStyle and ns.GetIconOutlineStyle()
     local drawSize = GetIconDrawSize(iconSize, outlineStyle)
 
-    local usedCustomIcon = ApplyButtonIcon(slot.mmIcon, def)
+    local usedCustomIcon = ApplyButtonIcon(slot.mmIcon, def, iconSize)
     slot.mmIcon:SetSize(drawSize, drawSize)
     slot.mmIcon:SetVertexColor(1, 1, 1, 1)
-    ConfigureCrispTexture(slot.mmIcon)
+    ConfigureCrispTexture(slot.mmIcon, iconSize)
     if slot.mmIcon.SetBlendMode then
         slot.mmIcon:SetBlendMode("BLEND")
     end
@@ -1256,7 +1289,6 @@ local buttonDefs = {
         label = "Warband Collections",
         nativeBtn = "CollectionsMicroButton",
         tooltip = "Warband Collections",
-        tooltipDesc = "Open Warband Collections",
         isSecure = false,
         onClick = OpenCollections,
     },
@@ -1265,7 +1297,6 @@ local buttonDefs = {
         setting = "showPVP",
         label = "PvP",
         tooltip = "Player vs. Player",
-        tooltipDesc = "Open the PvP window",
         isSecure = false,
         onClick = OpenPVP,
     },
@@ -1275,7 +1306,6 @@ local buttonDefs = {
         label = "Adventure Guide",
         nativeBtn = "EJMicroButton",
         tooltip = "Adventure Guide",
-        tooltipDesc = "Open the Adventure Guide",
         isSecure = false,
         onClick = OpenAdventureGuide,
     },
@@ -1285,7 +1315,6 @@ local buttonDefs = {
         label = "Housing",
         nativeBtn = "HousingMicroButton",
         tooltip = "Housing",
-        tooltipDesc = "Open Housing",
         isSecure = false,
         onClick = OpenHousing,
     },
@@ -1295,7 +1324,6 @@ local buttonDefs = {
         label = "Group Finder",
         nativeBtn = "LFDMicroButton",
         tooltip = "Group Finder",
-        tooltipDesc = "Open the Group Finder",
         isSecure = false,
         onClick = OpenGroupFinder,
     },
@@ -1305,7 +1333,6 @@ local buttonDefs = {
         label = "Quest Tracker",
         nativeBtn = "QuestLogMicroButton",
         tooltip = "Quest Log",
-        tooltipDesc = "Open the Quest Log",
         isSecure = false,
         onClick = OpenQuestTracker,
     },
@@ -1315,7 +1342,6 @@ local buttonDefs = {
         label = "Achievement Tracker",
         nativeBtn = "AchievementMicroButton",
         tooltip = "Achievements",
-        tooltipDesc = "Open Achievements",
         isSecure = false,
         onClick = OpenAchievementTracker,
     },
@@ -1325,7 +1351,6 @@ local buttonDefs = {
         label = "Talents & Spellbook",
         nativeBtn = "PlayerSpellsMicroButton",
         tooltip = "Talents & Spellbook",
-        tooltipDesc = "Open Talents and the Spellbook",
         isSecure = false,
         onClick = OpenTalents,
     },
@@ -1335,7 +1360,6 @@ local buttonDefs = {
         label = "Character",
         nativeBtn = "CharacterMicroButton",
         tooltip = "Character Info",
-        tooltipDesc = "Open Character Info",
         isSecure = false,
         onClick = OpenCharacter,
     },
@@ -1345,7 +1369,6 @@ local buttonDefs = {
         label = "Guild",
         nativeBtn = "GuildMicroButton",
         tooltip = "Guild & Communities",
-        tooltipDesc = "Open Guild and Communities",
         isSecure = false,
         onClick = OpenGuild,
     },
@@ -1355,7 +1378,6 @@ local buttonDefs = {
         label = "Social",
         nativeBtn = "QuickJoinToastButton",
         tooltip = "Social",
-        tooltipDesc = "Open Friends and Social",
         isSecure = false,
         onClick = OpenSocial,
     },
@@ -1365,7 +1387,6 @@ local buttonDefs = {
         label = "Game Menu",
         nativeBtn = "MainMenuMicroButton",
         tooltip = "Game Menu",
-        tooltipDesc = "Open the Game Menu",
         isSecure = false,
         onClick = function(_, button)
             if button == "LeftButton" then
@@ -1432,12 +1453,53 @@ local function ShowNativeMicroMenu()
 end
 
 local function UpdateNativeMenuVisibility()
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     if db and db.enabled and db.hideNativeMenu then
         HideNativeMicroMenu()
     else
         ShowNativeMicroMenu()
     end
+end
+
+local function IsHideInCombatEnabled()
+    local db = ns.GetDB()
+    return db and db.enabled and db.fadeInCombat
+end
+
+local function IsPlayerInCombat()
+    return UnitAffectingCombat("player") == true
+end
+
+local function UpdateCombatVisibility(inCombat)
+    if not menuFrame then
+        return
+    end
+
+    local db = ns.GetDB()
+    if not db or not db.enabled then
+        return
+    end
+
+    if not IsHideInCombatEnabled() then
+        menuFrame:SetAlpha(1)
+        if not menuFrame:IsShown() then
+            menuFrame:Show()
+        end
+        return
+    end
+
+    if inCombat == nil then
+        inCombat = IsPlayerInCombat()
+    end
+
+    if inCombat then
+        HideMenuTooltip()
+        menuFrame:Hide()
+        return
+    end
+
+    menuFrame:SetAlpha(1)
+    menuFrame:Show()
 end
 
 local function UpdatePosition()
@@ -1450,13 +1512,13 @@ local function UpdatePosition()
         return
     end
 
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     menuFrame:ClearAllPoints()
     menuFrame:SetPoint("CENTER", UIParent, "CENTER", math.floor((db.posX or 0) + 0.5), math.floor((db.posY or -200) + 0.5))
 end
 
 function ns.RefreshMenu()
-    local db = BurntWaffleBarDB
+    local db = ns.GetDB()
     if not db or not db.enabled then
         if menuFrame then
             menuFrame:Hide()
@@ -1571,6 +1633,7 @@ function ns.RefreshMenu()
         menuFrame:SetSize(totalWidth, maxHeight + clockHeight)
         menuFrame:Show()
         UpdateNativeMenuVisibility()
+        UpdateCombatVisibility(false)
     end)
 
     if ok then
@@ -1583,8 +1646,22 @@ end
 
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-initFrame:SetScript("OnEvent", function(_, _, isInitialLogin, isReloadingUI)
-    if isInitialLogin or isReloadingUI then
-        C_Timer.After(1, ns.RefreshMenu)
+initFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+initFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+initFrame:SetScript("OnEvent", function(_, event, isInitialLogin, isReloadingUI)
+    if event == "PLAYER_ENTERING_WORLD" then
+        if isInitialLogin or isReloadingUI then
+            C_Timer.After(1, ns.RefreshMenu)
+        end
+        return
+    end
+
+    if event == "PLAYER_REGEN_DISABLED" then
+        UpdateCombatVisibility(true)
+        return
+    end
+
+    if event == "PLAYER_REGEN_ENABLED" then
+        UpdateCombatVisibility(false)
     end
 end)
