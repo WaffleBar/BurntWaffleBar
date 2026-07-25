@@ -114,6 +114,11 @@ local function InstallUpdatePositionOverride()
             return
         end
 
+        -- Blizzard calls this with no args when the micro menu is hidden/absent.
+        if microMenuPosition == nil then
+            return
+        end
+
         return savedUpdatePosition(self, microMenuPosition, isMenuHorizontal)
     end
 end
@@ -130,9 +135,6 @@ local function RestoreQueueStatusButton()
     QueueStatusButton:SetParent(parent)
     QueueStatusButton:ClearAllPoints()
     QueueStatusButton:SetScale(1)
-    if QueueStatusButton.UpdatePosition then
-        pcall(QueueStatusButton.UpdatePosition, QueueStatusButton)
-    end
     ignoringPointHook = false
 end
 
@@ -180,7 +182,13 @@ local function ApplyQueueStatusLayout()
 end
 
 local function InstallQueueStatusHooks()
-    if hooksInstalled or not IsQueueStatusAvailable() then
+    if not IsQueueStatusAvailable() then
+        return
+    end
+
+    InstallUpdatePositionOverride()
+
+    if hooksInstalled then
         return
     end
 
@@ -217,8 +225,6 @@ local function InstallQueueStatusHooks()
             ignoringPointHook = false
         end
     end)
-
-    InstallUpdatePositionOverride()
 end
 
 function ns.UpdateQueueStatusAnchor()
@@ -258,9 +264,14 @@ initFrame:RegisterEvent("LFG_QUEUE_STATUS_UPDATE")
 initFrame:RegisterEvent("UPDATE_BATTLEFIELD_STATUS")
 initFrame:SetScript("OnEvent", function(_, event, isInitialLogin, isReloadingUI)
     if event == "PLAYER_ENTERING_WORLD" and (isInitialLogin or isReloadingUI) then
+        InstallUpdatePositionOverride()
         C_Timer.After(1, ns.UpdateQueueStatusAnchor)
         return
     end
 
     C_Timer.After(0, ns.UpdateQueueStatusAnchor)
 end)
+
+if IsQueueStatusAvailable() then
+    InstallUpdatePositionOverride()
+end
