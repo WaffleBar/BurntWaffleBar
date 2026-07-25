@@ -258,11 +258,19 @@ function ns.UpdateQueueStatusAnchor()
 end
 
 local initFrame = CreateFrame("Frame")
+initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 initFrame:RegisterEvent("LFG_UPDATE")
 initFrame:RegisterEvent("LFG_QUEUE_STATUS_UPDATE")
 initFrame:RegisterEvent("UPDATE_BATTLEFIELD_STATUS")
-initFrame:SetScript("OnEvent", function(_, event, isInitialLogin, isReloadingUI)
+initFrame:SetScript("OnEvent", function(_, event, loadedAddon, isInitialLogin, isReloadingUI)
+    if event == "ADDON_LOADED" then
+        if loadedAddon == "Blizzard_QueueStatusFrame" or loadedAddon == addonName then
+            InstallUpdatePositionOverride()
+        end
+        return
+    end
+
     if event == "PLAYER_ENTERING_WORLD" and (isInitialLogin or isReloadingUI) then
         InstallUpdatePositionOverride()
         C_Timer.After(1, ns.UpdateQueueStatusAnchor)

@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.3] — 2026-07-25
+
+### Fixed
+- Install the queue-eye `UpdatePosition` override when `Blizzard_QueueStatusFrame` loads (covers late frame init)
+
 ## [2.6.2] — 2026-07-25
 
 ### Fixed
