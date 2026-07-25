@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.5.13] — 2026-07-25
+
+### Fixed
+- `Fonts.xml` defines all required FontFamily alphabets for Midnight (fixes `missing alphabet 1` on non-English clients)
+
 ## [2.5.12] — 2026-07-25
 
 ### Fixed

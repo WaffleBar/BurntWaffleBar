@@ -3,5 +3,17 @@
         <Member alphabet="roman">
             <Font font="Interface\AddOns\BurntWaffleBar\Media\Fonts\VarelaRound-Regular.ttf" height="12"/>
         </Member>
+        <Member alphabet="korean">
+            <Font font="Fonts\2002.TTF" height="12"/>
+        </Member>
+        <Member alphabet="simplifiedchinese">
+            <Font font="Fonts\ARKai_T.ttf" height="12"/>
+        </Member>
+        <Member alphabet="traditionalchinese">
+            <Font font="Fonts\blei00d.TTF" height="12"/>
+        </Member>
+        <Member alphabet="russian">
+            <Font font="Fonts\FRIZQT___CYR.TTF" height="12"/>
+        </Member>
     </FontFamily>
 </Ui>
