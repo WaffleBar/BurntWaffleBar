@@ -257,6 +257,18 @@ local function InitializeSettings()
         buttonInitializers[#buttonInitializers + 1] = CreateCheckbox(category, entry.setting, entry.label)
     end
 
+    local buttonOrderInit = layout:AddInitializer(CreateSettingsButtonInitializer(
+        "Button Order",
+        "Customize Order",
+        function()
+            if ns.OpenButtonOrderPanel then
+                ns.OpenButtonOrderPanel()
+            end
+        end,
+        "Drag to reorder menu icons on this character. Hidden buttons stay in the list and reappear in place when turned back on.",
+        true
+    ))
+
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Layout"))
 
     CreateSlider(category, "iconSize", "Icon Size", 20, 100, 1, "Size of menu icons.")
@@ -330,6 +342,13 @@ local function InitializeSettings()
             return DB().enabled
         end)
     end
+
+    buttonOrderInit:SetParentInitializer(enabledInit, function()
+        return DB().enabled
+    end)
+    buttonOrderInit:AddShownPredicate(function()
+        return DB().enabled
+    end)
 
     clockInit:SetParentInitializer(enabledInit, function()
         return DB().enabled

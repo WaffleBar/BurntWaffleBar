@@ -351,6 +351,17 @@ public static class MinimalIconGen
         icon.Draw(g);
     }
 
+    static void DrawProfessions(Graphics g)
+    {
+        var icon = new IconComposer();
+        icon.Solid(RoundRect(28, 72, 72, 16, 3f));
+        icon.Solid(RoundRect(36, 82, 56, 20, 4f));
+        icon.Solid(RoundRect(22, 80, 14, 10, 2f));
+        icon.Solid(RoundRect(78, 32, 28, 14, 3f));
+        icon.Solid(RoundRect(88, 44, 8, 36, 2f));
+        icon.Draw(g);
+    }
+
     static void DrawTalents(Graphics g)
     {
         var icon = new IconComposer();
@@ -495,18 +506,38 @@ public static class MinimalIconGen
         }
     }
 
+    public static void GenerateProfessionsAssets(string themeDir, string sourceDir, string sourcePrefix)
+    {
+        Directory.CreateDirectory(themeDir);
+        if (!string.IsNullOrEmpty(sourceDir))
+        {
+            Directory.CreateDirectory(sourceDir);
+        }
+
+        using (var hiRes = RenderHiRes(DrawProfessions))
+        {
+            if (!string.IsNullOrEmpty(sourceDir) && !string.IsNullOrEmpty(sourcePrefix))
+            {
+                SavePng(hiRes, Path.Combine(sourceDir, sourcePrefix + "_Professions.png"));
+            }
+
+            SavePng(hiRes, Path.Combine(themeDir, "Professions.png"));
+            SaveTga(hiRes, Path.Combine(themeDir, "Professions.tga"));
+        }
+    }
+
     public static void GenerateAll(string outputDir)
     {
         Directory.CreateDirectory(outputDir);
 
         string[] names = {
             "Collections", "PVP", "AdventureGuide", "Housing", "GroupFinder", "QuestTracker",
-            "AchievementTracker", "Talents", "Character", "Guild", "Social", "GameMenu",
+            "AchievementTracker", "Professions", "Talents", "Character", "Guild", "Social", "GameMenu",
         };
 
         Action<Graphics>[] drawers = {
             DrawCollections, DrawPVP, DrawAdventureGuide, DrawHousing, DrawGroupFinder, DrawQuestTracker,
-            DrawAchievementTracker, DrawTalents, DrawCharacter, DrawGuild, DrawSocial, DrawGameMenu,
+            DrawAchievementTracker, DrawProfessions, DrawTalents, DrawCharacter, DrawGuild, DrawSocial, DrawGameMenu,
         };
 
         for (int i = 0; i < names.Length; i++)

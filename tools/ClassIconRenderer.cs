@@ -21,6 +21,7 @@ public static class ClassIconRenderer
                 case "GroupFinder": DrawGroupFinder(g, pal); break;
                 case "QuestTracker": DrawQuestTracker(g, pal); break;
                 case "AchievementTracker": DrawAchievementTracker(g, pal); break;
+                case "Professions": DrawProfessions(g, pal); break;
                 case "Talents": DrawTalents(g, pal); break;
                 case "Character": DrawCharacter(g, pal); break;
                 case "Guild": DrawGuild(g, pal); break;
@@ -143,6 +144,21 @@ public static class ClassIconRenderer
         ClassIconCore.FillMetal(g, bowl, pal, 0.35f, 0.22f);
         ClassIconCore.DrawClassEmblem(g, pal, C, C - 40, 90);
         bowl.Dispose();
+    }
+
+    static void DrawProfessions(Graphics g, ClassPalette pal)
+    {
+        using (var anvilTop = ClassIconCore.RoundRect(C - 220, C + 20, 440, 80, 16))
+            ClassIconCore.FillMetal(g, anvilTop, pal, 0.35f, 0.25f);
+        using (var anvilBase = ClassIconCore.RoundRect(C - 160, C + 90, 320, 100, 20))
+            ClassIconCore.FillMetal(g, anvilBase, pal, 0.32f, 0.22f);
+        using (var horn = ClassIconCore.RoundRect(C - 280, C + 40, 80, 50, 12))
+            ClassIconCore.FillMetal(g, horn, pal, 0.35f, 0.25f);
+        using (var hammerHead = ClassIconCore.RoundRect(C + 40, C - 220, 160, 70, 14))
+            ClassIconCore.FillMetal(g, hammerHead, pal, 0.4f, 0.28f);
+        using (var hammerHandle = ClassIconCore.RoundRect(C + 100, C - 150, 40, 280, 10))
+            ClassIconCore.FillMetal(g, hammerHandle, pal, 0.32f, 0.22f);
+        ClassIconCore.DrawClassEmblem(g, pal, C - 40, C + 10, 100);
     }
 
     static void DrawTalents(Graphics g, ClassPalette pal)

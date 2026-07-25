@@ -16,6 +16,7 @@ File names (must match exactly):
   GroupFinder.png         Group Finder
   QuestTracker.png        Quest Tracker
   AchievementTracker.png  Achievement Tracker
+  Professions.png         Professions
   Talents.png             Talents & Spellbook
   Character.png           Character (replaces your portrait icon)
   Guild.png               Guild

@@ -566,6 +566,7 @@ local FALLBACK_ATLASES = {
     GroupFinder = "UI-HUD-MicroMenu-Groupfinder-Up",
     QuestTracker = "UI-HUD-MicroMenu-Questlog-Up",
     AchievementTracker = "UI-HUD-MicroMenu-Achievements-Up",
+    Professions = "UI-HUD-MicroMenu-Professions-Up",
     Talents = "UI-HUD-MicroMenu-SpecTalents-Up",
     Character = "UI-HUD-MicroMenu-Character-Up",
     Guild = "UI-HUD-MicroMenu-GuildCommunities-Up",
@@ -1213,8 +1214,12 @@ local function OpenAchievementTracker()
     ClickNativeMicroButton("Achievements", "AchievementMicroButton")
 end
 
+local function OpenProfessions()
+    ClickNativeMicroButton("Professions", "ProfessionMicroButton")
+end
+
 local function OpenTalents()
-    ClickNativeMicroButton("Talents & Spellbook", "PlayerSpellsMicroButton", "ProfessionMicroButton")
+    ClickNativeMicroButton("Talents & Spellbook", "PlayerSpellsMicroButton")
 end
 
 local function OpenCharacter()
@@ -1346,6 +1351,15 @@ local buttonDefs = {
         onClick = OpenAchievementTracker,
     },
     {
+        id = "Professions",
+        setting = "showProfessions",
+        label = "Professions",
+        nativeBtn = "ProfessionMicroButton",
+        tooltip = "Professions",
+        isSecure = false,
+        onClick = OpenProfessions,
+    },
+    {
         id = "Talents",
         setting = "showTalents",
         label = "Talents & Spellbook",
@@ -1397,11 +1411,82 @@ local buttonDefs = {
 }
 
 ns.buttonSettings = {}
+ns.buttonDefsById = {}
+local defaultButtonOrder = {}
+
 for _, def in ipairs(buttonDefs) do
     ns.buttonSettings[#ns.buttonSettings + 1] = {
+        id = def.id,
         setting = def.setting,
         label = def.label,
     }
+    ns.buttonDefsById[def.id] = def
+    defaultButtonOrder[#defaultButtonOrder + 1] = def.id
+end
+
+function ns.GetDefaultButtonOrder()
+    local order = {}
+    for index, id in ipairs(defaultButtonOrder) do
+        order[index] = id
+    end
+    return order
+end
+
+function ns.EnsureButtonOrder(db)
+    if not db then
+        return
+    end
+
+    local valid = {}
+    for _, id in ipairs(defaultButtonOrder) do
+        valid[id] = true
+    end
+
+    if type(db.buttonOrder) ~= "table" then
+        db.buttonOrder = ns.GetDefaultButtonOrder()
+        return
+    end
+
+    local cleaned = {}
+    local seen = {}
+
+    for _, id in ipairs(db.buttonOrder) do
+        if valid[id] and not seen[id] then
+            cleaned[#cleaned + 1] = id
+            seen[id] = true
+        end
+    end
+
+    for _, id in ipairs(defaultButtonOrder) do
+        if not seen[id] then
+            if id == "Professions" then
+                local insertAt = #cleaned + 1
+                for index, existingId in ipairs(cleaned) do
+                    if existingId == "Talents" then
+                        insertAt = index
+                        break
+                    end
+                end
+                table.insert(cleaned, insertAt, id)
+            else
+                cleaned[#cleaned + 1] = id
+            end
+            seen[id] = true
+        end
+    end
+
+    db.buttonOrder = cleaned
+end
+
+local function GetButtonOrderIndex(db)
+    ns.EnsureButtonOrder(db)
+
+    local orderIndex = {}
+    for index, id in ipairs(db.buttonOrder) do
+        orderIndex[id] = index
+    end
+
+    return orderIndex
 end
 
 local function HideFrame(frame)
@@ -1539,12 +1624,17 @@ function ns.RefreshMenu()
 
         UpdatePosition()
 
+        local orderIndex = GetButtonOrderIndex(db)
         local enabled = {}
         for _, def in ipairs(buttonDefs) do
             if db[def.setting] ~= false then
                 enabled[#enabled + 1] = def
             end
         end
+
+        table.sort(enabled, function(a, b)
+            return (orderIndex[a.id] or 999) < (orderIndex[b.id] or 999)
+        end)
 
         if #enabled == 0 then
             menuFrame:Hide()

@@ -31,4 +31,11 @@ public static class DrawClassThemeSources
 
         Console.WriteLine("Done — drew sources for " + ClassPalette.All().Length + " classes.");
     }
+
+    public static void DrawProfessions(string root)
+    {
+        throw new InvalidOperationException(
+            "Professions class sources must be bespoke AI art in source/{ThemeId}_Professions.png. " +
+            "Do not regenerate procedurally.");
+    }
 }

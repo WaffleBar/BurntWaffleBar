@@ -17,6 +17,7 @@ ns.defaults = {
     showGroupFinder = true,
     showQuestTracker = true,
     showAchievementTracker = true,
+    showProfessions = true,
     showTalents = true,
     showCharacter = true,
     showGuild = true,
@@ -138,6 +139,9 @@ local function InitializeCharacterDB()
 
     MergeDefaults(BurntWaffleBarCharDB, ns.defaults)
     MigrateThemeSettings(BurntWaffleBarCharDB)
+    if ns.EnsureButtonOrder then
+        ns.EnsureButtonOrder(BurntWaffleBarCharDB)
+    end
     ns.ApplyClassThemeIfEnabled()
 end
 

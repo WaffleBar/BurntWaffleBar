@@ -53,6 +53,7 @@ local BUTTON_ICON_FILES = {
     GroupFinder = "GroupFinder",
     QuestTracker = "QuestTracker",
     AchievementTracker = "AchievementTracker",
+    Professions = "Professions",
     Talents = "Talents",
     Character = "Character",
     Guild = "Guild",

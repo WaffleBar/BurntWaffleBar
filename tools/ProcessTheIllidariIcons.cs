@@ -21,7 +21,7 @@ public static class ProcessTheIllidariIcons
     static readonly string[] Names =
     {
         "Collections", "PVP", "AdventureGuide", "Housing", "GroupFinder", "QuestTracker",
-        "AchievementTracker", "Talents", "Character", "Guild", "Social", "GameMenu",
+        "AchievementTracker", "Professions", "Talents", "Character", "Guild", "Social", "GameMenu",
     };
 
     static float Lerp(float a, float b, float t)

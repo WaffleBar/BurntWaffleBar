@@ -19,6 +19,7 @@ All 12 icons generated in source/ThePaladin_{Name}.png:
   [DONE] GroupFinder       — magnifying glass, grouped knights
   [DONE] QuestTracker      — gold ! on silver scroll plaque
   [DONE] AchievementTracker — laurel trophy chalice
+  [DONE] Professions           — holy smithing anvil and hammer
   [DONE] Talents           — spellbook + holy star
   [DONE] Character         — greathelm on radiant disc
   [DONE] Guild             — tabard banner + shield crest

@@ -34,6 +34,7 @@ public static class FrozenWaffleGen
         { "GroupFinder", new FrostPalette { Top = Color.FromArgb(255, 190, 225, 255), Mid = Color.FromArgb(255, 102, 172, 238), Bottom = Color.FromArgb(255, 48, 122, 205), Glow = Color.FromArgb(255, 228, 244, 255), BackShape = Color.FromArgb(210, 82, 152, 225) } },
         { "QuestTracker", new FrostPalette { Top = Color.FromArgb(255, 200, 235, 255), Mid = Color.FromArgb(255, 112, 182, 240), Bottom = Color.FromArgb(255, 55, 135, 215), Glow = Color.FromArgb(255, 235, 248, 255), BackShape = Color.FromArgb(210, 90, 162, 232) } },
         { "AchievementTracker", new FrostPalette { Top = Color.FromArgb(255, 205, 238, 255), Mid = Color.FromArgb(255, 118, 188, 245), Bottom = Color.FromArgb(255, 58, 142, 218), Glow = Color.FromArgb(255, 238, 250, 255), BackShape = Color.FromArgb(210, 95, 168, 235) } },
+        { "Professions", new FrostPalette { Top = Color.FromArgb(255, 198, 228, 255), Mid = Color.FromArgb(255, 108, 178, 242), Bottom = Color.FromArgb(255, 52, 128, 210), Glow = Color.FromArgb(255, 232, 246, 255), BackShape = Color.FromArgb(210, 88, 158, 230) } },
         { "Talents", new FrostPalette { Top = Color.FromArgb(255, 192, 230, 255), Mid = Color.FromArgb(255, 105, 175, 238), Bottom = Color.FromArgb(255, 50, 130, 212), Glow = Color.FromArgb(255, 230, 246, 255), BackShape = Color.FromArgb(210, 85, 155, 228) } },
         { "Character", new FrostPalette { Top = Color.FromArgb(255, 198, 232, 255), Mid = Color.FromArgb(255, 115, 185, 242), Bottom = Color.FromArgb(255, 58, 138, 215), Glow = Color.FromArgb(255, 232, 248, 255), BackShape = Color.FromArgb(210, 88, 160, 230) } },
         { "Guild", new FrostPalette { Top = Color.FromArgb(255, 202, 235, 255), Mid = Color.FromArgb(255, 110, 180, 240), Bottom = Color.FromArgb(255, 52, 132, 212), Glow = Color.FromArgb(255, 235, 248, 255), BackShape = Color.FromArgb(210, 92, 158, 232) } },
@@ -465,6 +466,15 @@ public static class FrozenWaffleGen
         icon.Fill(arrow);
     }
 
+    static void BuildProfessions(IconComposer icon)
+    {
+        icon.Fill(RoundRect(28, 72, 72, 16, 3f));
+        icon.Fill(RoundRect(36, 82, 56, 20, 4f));
+        icon.Fill(RoundRect(22, 80, 14, 10, 2f));
+        icon.Fill(RoundRect(78, 32, 28, 14, 3f));
+        icon.Fill(RoundRect(88, 44, 8, 36, 2f));
+    }
+
     static void BuildTalents(IconComposer icon)
     {
         var left = new GraphicsPath();
@@ -524,6 +534,15 @@ public static class FrozenWaffleGen
         icon.Fill(Capsule(28, 81, 72, 9));
     }
 
+    public static void GenerateProfessions(string outputDir)
+    {
+        Directory.CreateDirectory(outputDir);
+        using (var bmp = RenderGlassIcon("Professions", BuildProfessions))
+        {
+            bmp.Save(Path.Combine(outputDir, "Professions.png"), ImageFormat.Png);
+        }
+    }
+
     public static void GenerateAll(string outputDir)
     {
         Directory.CreateDirectory(outputDir);
@@ -537,6 +556,7 @@ public static class FrozenWaffleGen
             { "GroupFinder", BuildGroupFinder },
             { "QuestTracker", BuildQuestTracker },
             { "AchievementTracker", BuildAchievementTracker },
+            { "Professions", BuildProfessions },
             { "Talents", BuildTalents },
             { "Character", BuildCharacter },
             { "Guild", BuildGuild },

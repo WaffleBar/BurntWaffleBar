@@ -10,7 +10,7 @@ public static class MakeWowUpPreviews
     static readonly string[] IconOrder =
     {
         "Collections", "PVP", "AdventureGuide", "Housing", "GroupFinder", "QuestTracker",
-        "AchievementTracker", "Talents", "Character", "Guild", "Social", "GameMenu",
+        "AchievementTracker", "Professions", "Talents", "Character", "Guild", "Social", "GameMenu",
     };
 
     static readonly Dictionary<string, string> ThemeLabels = new Dictionary<string, string>
