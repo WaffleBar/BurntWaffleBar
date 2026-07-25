@@ -2,7 +2,7 @@
 ## Title: BurntWaffleBar
 ## Notes: A compact custom micro menu bar. Includes embedded LibEditMode for native Edit Mode repositioning.
 ## Author: Burn and Waffle
-## Version: 2.5.2
+## Version: 2.5.12
 ## IconTexture: Interface\AddOns\BurntWaffleBar\Media\AddonIcon.png
 ## X-Website: https://github.com/WaffleBar/BurntWaffleBar
 ## SavedVariables: BurntWaffleBarDB
@@ -17,4 +17,5 @@ ClockDigits.lua
 EditMode.lua
 Menu.lua
 ButtonOrder.lua
+QueueStatus.lua
 Settings.lua

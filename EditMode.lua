@@ -100,6 +100,9 @@ function ns.SetupEditMode(frame)
     lib:RegisterCallback("layout", function(layoutName)
         if frame:IsShown() then
             ns.ApplyMenuPosition(frame)
+            if ns.UpdateQueueStatusAnchor then
+                ns.UpdateQueueStatusAnchor()
+            end
         end
     end)
 

@@ -2,6 +2,57 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.5.12] — 2026-07-25
+
+### Fixed
+- Queue eye only appears when Blizzard shows it (queued, in instance, etc.); the addon no longer forces it visible at all times
+
+## [2.5.11] — 2026-07-25
+
+### Fixed
+- Queue eye lens centering nudged slightly down and left
+
+## [2.5.10] — 2026-07-25
+
+### Fixed
+- Queue eye lens centering corrected left after the previous nudge overshot down/right
+
+## [2.5.9] — 2026-07-25
+
+### Fixed
+- Queue eye centering inside the Group Finder lens nudged down and right
+
+## [2.5.8] — 2026-07-25
+
+### Fixed
+- Queue eye scale inside the Group Finder lens is much larger so it fills the magnifying glass instead of appearing as a tiny dot
+
+## [2.5.7] — 2026-07-25
+
+### Changed
+- Queue eye now sits inside the Group Finder magnifying-glass lens, scaled to the icon size instead of perching on the outer edge
+
+## [2.5.6] — 2026-07-25
+
+### Fixed
+- Queue eye inset scales with icon size so it sits further inward on the Group Finder icon instead of perching on the outer edge
+
+## [2.5.5] — 2026-07-25
+
+### Fixed
+- Queue eye now badges the top-right corner of the Group Finder icon instead of floating above it in the clock row
+
+## [2.5.4] — 2026-07-25
+
+### Fixed
+- Queue eye no longer floats into the clock row; it parents to the custom menu bar, sizes to the real button, and sits slightly overlapping the Group Finder icon
+- Queue eye management only runs while the Blizzard micro menu is hidden; otherwise Blizzard keeps control
+
+## [2.5.3] — 2026-07-25
+
+### Added
+- Re-anchor Blizzard's dungeon finder queue eye (`QueueStatusButton`) above the Group Finder icon when the default micro menu is hidden
+
 ## [2.5.2] — 2026-07-25
 
 ### Fixed

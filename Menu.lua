@@ -1537,6 +1537,36 @@ local function ShowNativeMicroMenu()
     end
 end
 
+function ns.GetMenuButtonAnchor(buttonId)
+    local entry = activeButtons[buttonId]
+    if not entry then
+        return nil
+    end
+
+    if IsValidFrame(entry.slot, "Frame") then
+        return entry.slot
+    end
+
+    if IsValidFrame(entry.btn, "Button") then
+        return entry.btn
+    end
+
+    return nil
+end
+
+function ns.GetMenuButtonIconAnchor(buttonId)
+    local entry = activeButtons[buttonId]
+    if not entry or not IsValidFrame(entry.slot, "Frame") then
+        return ns.GetMenuButtonAnchor(buttonId)
+    end
+
+    if entry.slot.content and IsValidFrame(entry.slot.content, "Frame") then
+        return entry.slot.content
+    end
+
+    return entry.slot
+end
+
 local function UpdateNativeMenuVisibility()
     local db = ns.GetDB()
     if db and db.enabled and db.hideNativeMenu then
@@ -1610,6 +1640,9 @@ function ns.RefreshMenu()
         end
         StopClockTicker()
         ShowNativeMicroMenu()
+        if ns.UpdateQueueStatusAnchor then
+            ns.UpdateQueueStatusAnchor()
+        end
         return
     end
 
@@ -1724,6 +1757,9 @@ function ns.RefreshMenu()
         menuFrame:Show()
         UpdateNativeMenuVisibility()
         UpdateCombatVisibility(false)
+        if ns.UpdateQueueStatusAnchor then
+            ns.UpdateQueueStatusAnchor()
+        end
     end)
 
     if ok then
