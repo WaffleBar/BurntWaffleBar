@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.4] — 2026-07-25
+
+### Fixed
+- Queue eye `UpdatePosition` override no longer calls a nil layout helper when the override installs before `ApplyQueueStatusLayout` is defined
+
 ## [2.6.3] — 2026-07-25
 
 ### Fixed

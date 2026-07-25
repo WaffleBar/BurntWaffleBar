@@ -6,6 +6,7 @@ local hooksInstalled = false
 local ignoringPointHook = false
 local managingQueueStatus = false
 local savedUpdatePosition
+local ApplyQueueStatusLayout
 
 -- Group Finder art: magnifying-glass lens center/size in normalized slot space.
 local LENS_OFFSET_X = -0.10
@@ -100,29 +101,6 @@ local function RestoreUpdatePositionOverride()
     savedUpdatePosition = nil
 end
 
-local function InstallUpdatePositionOverride()
-    if savedUpdatePosition or not IsQueueStatusAvailable() or not QueueStatusButton.UpdatePosition then
-        return
-    end
-
-    savedUpdatePosition = QueueStatusButton.UpdatePosition
-    QueueStatusButton.UpdatePosition = function(self, microMenuPosition, isMenuHorizontal)
-        if managingQueueStatus then
-            if QueueStatusButton:IsShown() then
-                ApplyQueueStatusLayout()
-            end
-            return
-        end
-
-        -- Blizzard calls this with no args when the micro menu is hidden/absent.
-        if microMenuPosition == nil then
-            return
-        end
-
-        return savedUpdatePosition(self, microMenuPosition, isMenuHorizontal)
-    end
-end
-
 local function RestoreQueueStatusButton()
     if not IsQueueStatusAvailable() then
         return
@@ -164,7 +142,7 @@ local function ShouldApplyQueueLayout()
         and QueueStatusButton:IsShown()
 end
 
-local function ApplyQueueStatusLayout()
+ApplyQueueStatusLayout = function()
     if ignoringPointHook or not ShouldApplyQueueLayout() then
         return
     end
@@ -179,6 +157,32 @@ local function ApplyQueueStatusLayout()
     QueueStatusButton:SetPoint("CENTER", queueAnchor, "CENTER", offsetX, offsetY)
     RepositionQueueStatusTimer(queueAnchor)
     ignoringPointHook = false
+end
+
+local function InstallUpdatePositionOverride()
+    if savedUpdatePosition or not IsQueueStatusAvailable() or not QueueStatusButton.UpdatePosition then
+        return
+    end
+
+    local originalUpdatePosition = QueueStatusButton.UpdatePosition
+    savedUpdatePosition = originalUpdatePosition
+    QueueStatusButton.UpdatePosition = function(self, microMenuPosition, isMenuHorizontal)
+        if managingQueueStatus then
+            if QueueStatusButton:IsShown() and ApplyQueueStatusLayout then
+                ApplyQueueStatusLayout()
+            end
+            return
+        end
+
+        -- Blizzard calls this with no args when the micro menu is hidden/absent.
+        if microMenuPosition == nil then
+            return
+        end
+
+        if originalUpdatePosition then
+            return originalUpdatePosition(self, microMenuPosition, isMenuHorizontal)
+        end
+    end
 end
 
 local function InstallQueueStatusHooks()
