@@ -92,4 +92,4 @@ This addon embeds [LibEditMode](https://github.com/p3lim-wow/LibEditMode) (see `
 
 ## Author
 
-Burn and Waffle
+Waffle

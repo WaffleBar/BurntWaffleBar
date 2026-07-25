@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.7] — 2026-07-25
+
+### Changed
+- Author metadata updated to **Waffle**
+
 ## [2.6.6] — 2026-07-25
 
 ### Changed
