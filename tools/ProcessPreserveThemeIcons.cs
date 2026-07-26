@@ -264,6 +264,7 @@ public static class ProcessPreserveThemeIcons
         ProcessTheme("ThePriest", Path.Combine(themesRoot, "ThePriest", "source"), Path.Combine(themesRoot, "ThePriest"), 20, 18, 28);
         ProcessTheme("TheShaman", Path.Combine(themesRoot, "TheShaman", "source"), Path.Combine(themesRoot, "TheShaman"), 8, 14, 24);
         ProcessTheme("TheMage", Path.Combine(themesRoot, "TheMage", "source"), Path.Combine(themesRoot, "TheMage"), 10, 16, 28);
+        ProcessTheme("TheFireMage", Path.Combine(themesRoot, "TheFireMage", "source"), Path.Combine(themesRoot, "TheFireMage"), 22, 10, 6);
         ProcessTheme("TheWarlock", Path.Combine(themesRoot, "TheWarlock", "source"), Path.Combine(themesRoot, "TheWarlock"), 16, 8, 24);
         ProcessTheme("TheMonk", Path.Combine(themesRoot, "TheMonk", "source"), Path.Combine(themesRoot, "TheMonk"), 10, 20, 14);
         ProcessTheme("TheDruid", Path.Combine(themesRoot, "TheDruid", "source"), Path.Combine(themesRoot, "TheDruid"), 20, 14, 8);

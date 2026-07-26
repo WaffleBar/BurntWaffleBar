@@ -2,6 +2,16 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.12] — 2026-07-26
+
+### Changed
+- **The Fire Mage** — rebuilt circular medallion icons as freeform function silhouettes (hood, blades, book, house, flames, scroll, trophy, anvil, constellation, phoenix, twin spirits); kept paw crest + gear
+
+## [2.6.11] — 2026-07-26
+
+### Added
+- **The Fire Mage** icon theme — Midnight Fire Mage pack (ember orange, molten bronze, combustion glow); selectable beside The Mage
+
 ## [2.6.10] — 2026-07-26
 
 ### Changed

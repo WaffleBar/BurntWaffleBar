@@ -7,6 +7,7 @@ local ICON_TEXTURE_SMALL_THRESHOLD = 62
 local THEME_ICON_EXTENSIONS = {
     ThePaladin = { ".png" },
     TheIllidari = { ".png" },
+    TheFireMage = { ".png" },
 }
 
 local CLASS_THEME_IDS = {
@@ -16,6 +17,7 @@ local CLASS_THEME_IDS = {
     "ThePriest",
     "TheShaman",
     "TheMage",
+    "TheFireMage",
     "TheWarlock",
     "TheMonk",
     "TheDruid",
@@ -255,6 +257,13 @@ ns.iconThemes = {
         { 0.048, 0.084, 0.132 },
         { 0.08, 0.14, 0.22 }
     ),
+    TheFireMage = MakeClassTheme(
+        "TheFireMage", "The Fire Mage",
+        { 1.0, 0.55, 0.12 },
+        { 1.0, 0.78, 0.28 },
+        { 0.12, 0.035, 0.015 },
+        { 0.2, 0.06, 0.025 }
+    ),
     TheWarlock = MakeClassTheme(
         "TheWarlock", "The Warlock",
         { 0.53, 0.53, 0.93 },
@@ -301,6 +310,7 @@ ns.iconThemeOrder = {
     "ThePriest",
     "TheShaman",
     "TheMage",
+    "TheFireMage",
     "TheWarlock",
     "TheMonk",
     "TheDruid",

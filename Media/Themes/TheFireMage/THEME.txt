@@ -1,0 +1,23 @@
+The Fire Mage theme
+===================
+
+Retail WoW Fire Mage (Midnight) — blackened iron, molten bronze, ember orange,
+combustion gold, and white-hot pyro cores. Spec-flavored sibling of The Mage
+(arcane cyan / frost), selectable separately so Fire Mages can opt into flame
+UI without changing the default Mage class theme.
+
+Visual language inspired by Pyroblast, Combustion, and Fire Blast fantasy —
+warm forge metal, flame filigree, ruby inlays (no frost cyan / arcane violet).
+
+Shape language: freeform function silhouettes (hood, crossed blades, open book,
+house, flames, scroll, trophy, anvil, constellation, phoenix, twin spirits,
+paw crest, gear) — not circular medallions. Outer cutout follows the object.
+
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(ProcessTheFireMage.cs runner).
+
+  Raw:  source/TheFireMage_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Fire Mage
+(turn off Use Class Theme if you are a Mage on the default The Mage pack).
