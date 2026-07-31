@@ -42,7 +42,13 @@ WowUp Hub shows a **Previews** gallery from a `.previews/` folder in your repo (
 2. Regenerate mockups: run `tools\MakeWowUpPreviews.exe` (see `.previews/README.md`).
 3. Commit, push to `main`, then tag a release (e.g. `v2.4.2`). WowUp picks up the new gallery on the next Hub sync after that release.
 
-The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview**. Use `.github/social-preview.png` from this repo (1280×1280 square). WowUp Hub reads that image, not the addon icon.
+The **addon list thumbnail** is separate: set your GitHub repo **Social preview** under **Settings → Social preview**.
+
+1. Upload **`.github/social-preview.jpg`** (molten-W, under 1MB) — or `.github/social-preview.png` if you prefer PNG.
+2. Tag a new release so WowUp Hub re-indexes.
+3. If WowUp still shows a broken image, remove and re-upload the social preview (GitHub serves signed image URLs; a fresh upload forces Hub to refresh).
+
+A stable copy also lives at `Media/WowUpThumb.jpg` (`https://raw.githubusercontent.com/WaffleBar/BurntWaffleBar/main/Media/WowUpThumb.jpg`).
 
 This folder is excluded from the addon zip via `.pkgmeta`, so previews never ship to players' `Interface\AddOns` folder.
 

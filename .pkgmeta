@@ -11,3 +11,5 @@ ignore:
   - Media/**/reference-bar.png
   - Media/icon-concepts
   - Media/AddonIconSource.png
+  - Media/WowUpThumb.jpg
+  - Media/WowUp-Thumb-Mockups

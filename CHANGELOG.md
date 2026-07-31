@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.13] - 2026-07-31
+
+### Fixed
+- WowUp Hub card thumbnail: molten-W social preview under 1MB (.github/social-preview.jpg / .png) plus stable Media/WowUpThumb.jpg. Re-upload the JPG under GitHub Settings > Social preview so Hub picks up a fresh image.
+
 ## [2.6.12] — 2026-07-26
 
 ### Changed
