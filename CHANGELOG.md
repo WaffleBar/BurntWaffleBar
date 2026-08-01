@@ -2,6 +2,16 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.15] - 2026-07-31
+
+### Changed
+- **The Ret Pally** — redesigned freeform icons to distinct Ret identity (Silver Hand fist, Ashbringer swords, Templar party, clasped gauntlets, libram, cathedral, winged Wrath helm); removed Fire Mage silhouette clones (phoenix / flame spirits / magma motifs)
+
+## [2.6.14] - 2026-07-31
+
+### Added
+- **The Ret Pally** icon theme — Midnight Retribution Paladin pack (silver plate, holy gold, Wake of Ashes charcoal, Light Within radiance); freeform silhouettes matching The Fire Mage quality; selectable beside The Paladin
+
 ## [2.6.13] - 2026-07-31
 
 ### Fixed

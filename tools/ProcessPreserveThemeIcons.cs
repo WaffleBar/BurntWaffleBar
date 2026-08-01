@@ -14,6 +14,7 @@ public static class ProcessPreserveThemeIcons
     const int SmallOutputSize = 96;
     const int WorkSize = 512;
     const float IconScale = 0.93f;
+    const float DefaultSmallSharpen = 0.42f;
     const int ContentPad = 3;
     const int AlphaCutoff = 20;
 
@@ -104,6 +105,52 @@ public static class ProcessPreserveThemeIcons
 
         var target = RenderScaled(cropped, canvasSize);
         cropped.Dispose();
+        return target;
+    }
+
+    /// <summary>
+    /// Fit freeform silhouettes to a consistent optical footprint so bar spacing
+    /// looks even. Scales to cover minFill on BOTH axes and center-crops overflow
+    /// (tall/skinny icons grow until width catches up instead of leaving gutters).
+    /// </summary>
+    static Bitmap OpticalRecenter(Bitmap source, int canvasSize, float minFill, float maxFill)
+    {
+        Rectangle bounds = FindContentBounds(source, AlphaCutoff);
+        if (bounds.Width < 2 || bounds.Height < 2)
+            return RenderScaled(source, canvasSize);
+
+        // Cover: both axes reach at least minFill (overflow is clipped by the canvas).
+        float scale = Math.Max(
+            (canvasSize * minFill) / bounds.Width,
+            (canvasSize * minFill) / bounds.Height);
+
+        // Only shrink if BOTH axes would exceed maxFill (keeps skinny icons from
+        // collapsing back to a narrow footprint).
+        float scaledW = bounds.Width * scale;
+        float scaledH = bounds.Height * scale;
+        if (scaledW > canvasSize * maxFill && scaledH > canvasSize * maxFill)
+        {
+            scale = Math.Min(
+                (canvasSize * maxFill) / bounds.Width,
+                (canvasSize * maxFill) / bounds.Height);
+            scaledW = bounds.Width * scale;
+            scaledH = bounds.Height * scale;
+        }
+
+        var target = new Bitmap(canvasSize, canvasSize, PixelFormat.Format32bppArgb);
+        using (var g = Graphics.FromImage(target))
+        {
+            g.Clear(Color.Transparent);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.DrawImage(
+                source,
+                new RectangleF((canvasSize - scaledW) / 2f, (canvasSize - scaledH) / 2f, scaledW, scaledH),
+                bounds,
+                GraphicsUnit.Pixel);
+        }
         return target;
     }
 
@@ -215,22 +262,101 @@ public static class ProcessPreserveThemeIcons
         return output;
     }
 
-    static void ProcessBoth(Bitmap source, int shadowR, int shadowG, int shadowB, out Bitmap full, out Bitmap small)
+    /// <summary>
+    /// Slightly dilate opaque coverage so thin freeform strokes (blades, shafts, filigree)
+    /// survive aggressive downscale into the small tier.
+    /// </summary>
+    static Bitmap ThickenAlphaForSmall(Bitmap source)
+    {
+        int w = source.Width;
+        int h = source.Height;
+        var output = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                Color center = SamplePixel(source, x, y);
+                int bestA = center.A;
+                int bestR = center.R;
+                int bestG = center.G;
+                int bestB = center.B;
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        if (dx == 0 && dy == 0) continue;
+                        Color n = SamplePixel(source, x + dx, y + dy);
+                        if (n.A > bestA)
+                        {
+                            bestA = n.A;
+                            bestR = n.R;
+                            bestG = n.G;
+                            bestB = n.B;
+                        }
+                    }
+                }
+
+                if (center.A >= AlphaCutoff)
+                    output.SetPixel(x, y, center);
+                else if (bestA >= AlphaCutoff)
+                    output.SetPixel(x, y, Color.FromArgb(ClampByte((int)Math.Round(bestA * 0.85)), bestR, bestG, bestB));
+                else
+                    output.SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
+            }
+        }
+        return output;
+    }
+
+    static void ProcessBoth(
+        Bitmap source,
+        int shadowR,
+        int shadowG,
+        int shadowB,
+        out Bitmap full,
+        out Bitmap small,
+        int smallOutputSize = SmallOutputSize,
+        float smallSharpen = DefaultSmallSharpen,
+        bool thickenSmall = false,
+        bool opticalNormalize = false)
     {
         using (var working = RenderScaled(source, WorkSize))
         {
             KeyBackground(working);
-            using (var cropped = TightCropRecenter(working, WorkSize))
+            using (var cropped = opticalNormalize
+                ? OpticalRecenter(working, WorkSize, 0.84f, 0.96f)
+                : TightCropRecenter(working, WorkSize))
             using (var withShadow = AddContactShadow(cropped, shadowR, shadowG, shadowB))
             {
                 full = DownscaleBitmap(withShadow, OutputSize);
-                using (var smallBase = DownscaleBitmap(withShadow, SmallOutputSize))
-                    small = SharpenForSmallDisplay(smallBase, 0.42f);
+
+                Bitmap smallSource = withShadow;
+                Bitmap thickened = null;
+                if (thickenSmall)
+                {
+                    thickened = ThickenAlphaForSmall(withShadow);
+                    smallSource = thickened;
+                }
+
+                using (var smallBase = DownscaleBitmap(smallSource, smallOutputSize))
+                    small = SharpenForSmallDisplay(smallBase, smallSharpen);
+
+                if (thickened != null)
+                    thickened.Dispose();
             }
         }
     }
 
-    public static void ProcessTheme(string prefix, string inputDir, string outputDir, int shadowR, int shadowG, int shadowB)
+    public static void ProcessTheme(
+        string prefix,
+        string inputDir,
+        string outputDir,
+        int shadowR,
+        int shadowG,
+        int shadowB,
+        int smallOutputSize = SmallOutputSize,
+        float smallSharpen = DefaultSmallSharpen,
+        bool thickenSmall = false,
+        bool opticalNormalize = false)
     {
         Directory.CreateDirectory(outputDir);
         string smallDir = Path.Combine(outputDir, "small");
@@ -244,7 +370,7 @@ public static class ProcessPreserveThemeIcons
             {
                 Bitmap full;
                 Bitmap small;
-                ProcessBoth(src, shadowR, shadowG, shadowB, out full, out small);
+                ProcessBoth(src, shadowR, shadowG, shadowB, out full, out small, smallOutputSize, smallSharpen, thickenSmall, opticalNormalize);
                 using (full)
                 using (small)
                 {
@@ -256,6 +382,61 @@ public static class ProcessPreserveThemeIcons
         }
     }
 
+    /// <summary>
+    /// Lift dark midtones so charcoal metal/stone detail reads at bar size, without
+    /// blowing out already-bright ember/glow pixels.
+    /// </summary>
+    public static Bitmap LiftDarkDetails(Bitmap source, float lift = 1.32f)
+    {
+        int w = source.Width;
+        int h = source.Height;
+        var output = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                Color c = source.GetPixel(x, y);
+                if (c.A <= AlphaCutoff)
+                {
+                    output.SetPixel(x, y, Color.FromArgb(0, 0, 0, 0));
+                    continue;
+                }
+
+                float peak = Math.Max(c.R, Math.Max(c.G, c.B)) / 255f;
+                // Full lift in deep shadows; ease off as pixels approach glow range.
+                float protect = peak <= 0.42f ? 0f : Math.Min(1f, (peak - 0.42f) / 0.40f);
+                float factor = lift * (1f - protect) + 1f * protect;
+
+                // Extra gentle floor so near-black charcoal separates from the void bg.
+                float floorBoost = peak < 0.18f ? (0.18f - peak) * 0.55f : 0f;
+
+                byte r = ClampByte((int)Math.Round(c.R * factor + floorBoost * 255f));
+                byte g = ClampByte((int)Math.Round(c.G * factor + floorBoost * 220f));
+                byte b = ClampByte((int)Math.Round(c.B * factor + floorBoost * 180f));
+                output.SetPixel(x, y, Color.FromArgb(c.A, r, g, b));
+            }
+        }
+        return output;
+    }
+
+    public static void LiftIconFile(string path, float lift = 1.32f)
+    {
+        if (!File.Exists(path))
+            return;
+
+        string tempPath = path + ".lift.tmp.png";
+        using (var src = new Bitmap(path))
+        using (var lifted = LiftDarkDetails(src, lift))
+        {
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
+            lifted.Save(tempPath, ImageFormat.Png);
+        }
+        File.Delete(path);
+        File.Move(tempPath, path);
+        Console.WriteLine("Lifted dark detail: " + path);
+    }
+
     public static void ProcessAllClassThemes(string themesRoot)
     {
         ProcessTheme("TheWarrior", Path.Combine(themesRoot, "TheWarrior", "source"), Path.Combine(themesRoot, "TheWarrior"), 18, 12, 8);
@@ -264,7 +445,10 @@ public static class ProcessPreserveThemeIcons
         ProcessTheme("ThePriest", Path.Combine(themesRoot, "ThePriest", "source"), Path.Combine(themesRoot, "ThePriest"), 20, 18, 28);
         ProcessTheme("TheShaman", Path.Combine(themesRoot, "TheShaman", "source"), Path.Combine(themesRoot, "TheShaman"), 8, 14, 24);
         ProcessTheme("TheMage", Path.Combine(themesRoot, "TheMage", "source"), Path.Combine(themesRoot, "TheMage"), 10, 16, 28);
-        ProcessTheme("TheFireMage", Path.Combine(themesRoot, "TheFireMage", "source"), Path.Combine(themesRoot, "TheFireMage"), 22, 10, 6);
+        // Freeform Fire Mage: stronger small tier + optical fill so skinny icons don't leave uneven gaps.
+        ProcessTheme("TheFireMage", Path.Combine(themesRoot, "TheFireMage", "source"), Path.Combine(themesRoot, "TheFireMage"), 22, 10, 6, 128, 0.68f, true, true);
+        // Freeform Ret Pally: same pipeline as Fire Mage (holy gold / silver plate silhouettes).
+        ProcessTheme("TheRetPally", Path.Combine(themesRoot, "TheRetPally", "source"), Path.Combine(themesRoot, "TheRetPally"), 22, 10, 6, 128, 0.68f, true, true);
         ProcessTheme("TheWarlock", Path.Combine(themesRoot, "TheWarlock", "source"), Path.Combine(themesRoot, "TheWarlock"), 16, 8, 24);
         ProcessTheme("TheMonk", Path.Combine(themesRoot, "TheMonk", "source"), Path.Combine(themesRoot, "TheMonk"), 10, 20, 14);
         ProcessTheme("TheDruid", Path.Combine(themesRoot, "TheDruid", "source"), Path.Combine(themesRoot, "TheDruid"), 20, 14, 8);

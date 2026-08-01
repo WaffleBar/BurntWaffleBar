@@ -2,12 +2,15 @@ local addonName, ns = ...
 
 local ADDON_ROOT = "Interface\\AddOns\\BurntWaffleBar\\"
 local ICON_EXTENSIONS = { ".png", ".tga" }
-local ICON_TEXTURE_SMALL_THRESHOLD = 62
+-- Switch to pre-sharpened small/ textures at compact bar sizes (Fire Mage freeform
+-- silhouettes need this earlier than circular medallion themes).
+local ICON_TEXTURE_SMALL_THRESHOLD = 80
 
 local THEME_ICON_EXTENSIONS = {
     ThePaladin = { ".png" },
     TheIllidari = { ".png" },
     TheFireMage = { ".png" },
+    TheRetPally = { ".png" },
 }
 
 local CLASS_THEME_IDS = {
@@ -18,6 +21,7 @@ local CLASS_THEME_IDS = {
     "TheShaman",
     "TheMage",
     "TheFireMage",
+    "TheRetPally",
     "TheWarlock",
     "TheMonk",
     "TheDruid",
@@ -257,13 +261,32 @@ ns.iconThemes = {
         { 0.048, 0.084, 0.132 },
         { 0.08, 0.14, 0.22 }
     ),
-    TheFireMage = MakeClassTheme(
-        "TheFireMage", "The Fire Mage",
-        { 1.0, 0.55, 0.12 },
-        { 1.0, 0.78, 0.28 },
-        { 0.12, 0.035, 0.015 },
-        { 0.2, 0.06, 0.025 }
-    ),
+    TheFireMage = (function()
+        local theme = MakeClassTheme(
+            "TheFireMage", "The Fire Mage",
+            { 1.0, 0.55, 0.12 },
+            { 1.0, 0.78, 0.28 },
+            { 0.12, 0.035, 0.015 },
+            { 0.2, 0.06, 0.025 }
+        )
+        -- Freeform silhouettes read a touch large after optical fill; keep slot rhythm tight.
+        theme.iconOutline.drawScale = 0.90
+        theme.iconOutline.textureInset = 0.02
+        return theme
+    end)(),
+    TheRetPally = (function()
+        local theme = MakeClassTheme(
+            "TheRetPally", "The Ret Pally",
+            { 1.0, 0.90, 0.55 },
+            { 1.0, 0.82, 0.35 },
+            { 0.10, 0.06, 0.08 },
+            { 0.16, 0.08, 0.10 }
+        )
+        -- Freeform silhouettes (same optical-fill pipeline as The Fire Mage).
+        theme.iconOutline.drawScale = 0.90
+        theme.iconOutline.textureInset = 0.02
+        return theme
+    end)(),
     TheWarlock = MakeClassTheme(
         "TheWarlock", "The Warlock",
         { 0.53, 0.53, 0.93 },
@@ -303,6 +326,7 @@ ns.iconThemes = {
 
 ns.iconThemeOrder = {
     "ThePaladin",
+    "TheRetPally",
     "TheIllidari",
     "TheWarrior",
     "TheHunter",

@@ -8,7 +8,7 @@ A compact custom micro menu bar for World of Warcraft retail, with multiple icon
 - Optional clock above the bar
 - Hide Blizzard's default micro menu
 - **Edit Mode:** drag the bar in WoW's native Edit Mode (`/editmode`) — no extra addons required
-- Icon themes: The Paladin, The Illidari, and **all 13 retail classes** (Warrior, Hunter, Rogue, Priest, Shaman, Mage, Warlock, Monk, Druid, Death Knight, Evoker). Class themes are selected automatically by default.
+- Icon themes: The Paladin, **The Ret Pally**, The Illidari, **The Fire Mage**, and **all 13 retail classes** (Warrior, Hunter, Rogue, Priest, Shaman, Mage, Warlock, Monk, Druid, Death Knight, Evoker). Class themes are selected automatically by default; Ret Pally / Fire Mage are specialty packs you pick manually.
 
 ## Installation
 

@@ -1,0 +1,26 @@
+The Ret Pally theme
+===================
+
+Retail WoW Retribution Paladin (Midnight) — polished silver plate, holy gold,
+white-hot Light, Wake of Ashes charcoal accents, dawnlight amber, and deep
+crimson Ret class accents. Spec-flavored sibling of The Paladin; pick it
+manually so Ret players get Templar / Herald fantasy without replacing the
+default Paladin class theme.
+
+NOT a Fire Mage recolor. Motifs are deliberately Ret-only:
+  Silver Hand fist, Ashbringer greatswords, Hammer of Light / Hammer of Wrath,
+  closed libram, cathedral housing, Templar party knights, clasped gauntlets,
+  judgment scroll, winged victory wreath + hammer, Light Within sword + seals,
+  Avenging Wrath winged helm, guild banner with fist crest, settings gear with
+  hammer head — no phoenix, no flame spirits, no magma paw clones.
+
+Shape language: freeform function silhouettes (outer cutout follows the object).
+
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(ProcessTheRetPally.cs runner).
+
+  Raw:  source/TheRetPally_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Ret Pally
+(turn off Use Class Theme if you are a Paladin on the default The Paladin pack).
