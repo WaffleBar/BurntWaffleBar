@@ -11,6 +11,7 @@ local THEME_ICON_EXTENSIONS = {
     TheIllidari = { ".png" },
     TheFireMage = { ".png" },
     TheRetPally = { ".png" },
+    TheRestoShammy = { ".png" },
 }
 
 local CLASS_THEME_IDS = {
@@ -19,6 +20,7 @@ local CLASS_THEME_IDS = {
     "TheRogue",
     "ThePriest",
     "TheShaman",
+    "TheRestoShammy",
     "TheMage",
     "TheFireMage",
     "TheRetPally",
@@ -287,6 +289,19 @@ ns.iconThemes = {
         theme.iconOutline.textureInset = 0.02
         return theme
     end)(),
+    TheRestoShammy = (function()
+        local theme = MakeClassTheme(
+            "TheRestoShammy", "The Resto Shammy",
+            { 0.18, 0.78, 0.68 },
+            { 0.40, 0.95, 0.82 },
+            { 0.02, 0.07, 0.08 },
+            { 0.04, 0.12, 0.12 }
+        )
+        -- Freeform silhouettes (same optical-fill pipeline as The Fire Mage).
+        theme.iconOutline.drawScale = 0.90
+        theme.iconOutline.textureInset = 0.02
+        return theme
+    end)(),
     TheWarlock = MakeClassTheme(
         "TheWarlock", "The Warlock",
         { 0.53, 0.53, 0.93 },
@@ -333,6 +348,7 @@ ns.iconThemeOrder = {
     "TheRogue",
     "ThePriest",
     "TheShaman",
+    "TheRestoShammy",
     "TheMage",
     "TheFireMage",
     "TheWarlock",

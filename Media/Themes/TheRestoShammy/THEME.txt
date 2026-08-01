@@ -1,0 +1,25 @@
+The Resto Shammy theme
+======================
+
+Retail WoW Restoration Shaman (Midnight) — seafoam teal, Healing Rain turquoise,
+driftwood totems, soft green nature mist, and ancestral spirit glow. Spec-flavored
+sibling of The Shaman; pick it manually so Resto players get Totemic / Farseer
+healing fantasy without replacing the default Shaman class theme.
+
+NOT an Elemental lightning recolor and NOT a Ret/Fire Mage clone. Motifs are
+deliberately Resto-only:
+  Surging / Healing Stream totems, Healing Rain cloud, Ancestral spirits,
+  Riptide water, Spirit Link rings, seashell / coral glory, riverside lodge,
+  herbal mortar on a totem stump, birch-bark quest scroll — no magma phoenix,
+  no holy fist, no storm-orange Elemental blasts.
+
+Shape language: freeform function silhouettes (outer cutout follows the object).
+
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(ProcessTheRestoShammy.cs runner).
+
+  Raw:  source/TheRestoShammy_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Resto Shammy
+(turn off Use Class Theme if you are a Shaman on the default The Shaman pack).

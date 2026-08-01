@@ -2,6 +2,11 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.16] - 2026-07-31
+
+### Added
+- **The Resto Shammy** icon theme — Midnight Restoration Shaman pack (seafoam teal, Healing Rain, totems, Ancestral spirits); freeform silhouettes matching The Fire Mage / Ret Pally quality; selectable beside The Shaman
+
 ## [2.6.15] - 2026-07-31
 
 ### Changed
