@@ -12,12 +12,15 @@ local THEME_ICON_EXTENSIONS = {
     TheFireMage = { ".png" },
     TheRetPally = { ".png" },
     TheRestoShammy = { ".png" },
+    TheBDK = { ".png" },
+    TheSubRogue = { ".png" },
 }
 
 local CLASS_THEME_IDS = {
     "TheWarrior",
     "TheHunter",
     "TheRogue",
+    "TheSubRogue",
     "ThePriest",
     "TheShaman",
     "TheRestoShammy",
@@ -28,6 +31,7 @@ local CLASS_THEME_IDS = {
     "TheMonk",
     "TheDruid",
     "TheDeathKnight",
+    "TheBDK",
     "TheEvoker",
 }
 
@@ -242,6 +246,19 @@ ns.iconThemes = {
         { 0.072, 0.066, 0.036 },
         { 0.12, 0.11, 0.06 }
     ),
+    TheSubRogue = (function()
+        local theme = MakeClassTheme(
+            "TheSubRogue", "The Sub Rogue",
+            { 0.58, 0.32, 0.95 },
+            { 0.78, 0.52, 1.0 },
+            { 0.04, 0.02, 0.08 },
+            { 0.08, 0.04, 0.14 }
+        )
+        -- Freeform silhouettes (same optical-fill pipeline as The Fire Mage).
+        theme.iconOutline.drawScale = 0.90
+        theme.iconOutline.textureInset = 0.02
+        return theme
+    end)(),
     ThePriest = MakeClassTheme(
         "ThePriest", "The Priest",
         { 1, 1, 1 },
@@ -330,6 +347,19 @@ ns.iconThemes = {
         { 0.072, 0.024, 0.036 },
         { 0.12, 0.04, 0.06 }
     ),
+    TheBDK = (function()
+        local theme = MakeClassTheme(
+            "TheBDK", "The BDK",
+            { 0.88, 0.10, 0.18 },
+            { 1.0, 0.32, 0.28 },
+            { 0.06, 0.015, 0.02 },
+            { 0.12, 0.03, 0.04 }
+        )
+        -- Freeform silhouettes (same optical-fill pipeline as The Fire Mage).
+        theme.iconOutline.drawScale = 0.90
+        theme.iconOutline.textureInset = 0.02
+        return theme
+    end)(),
     TheEvoker = MakeClassTheme(
         "TheEvoker", "The Evoker",
         { 0.2, 0.58, 0.5 },
@@ -346,6 +376,7 @@ ns.iconThemeOrder = {
     "TheWarrior",
     "TheHunter",
     "TheRogue",
+    "TheSubRogue",
     "ThePriest",
     "TheShaman",
     "TheRestoShammy",
@@ -355,6 +386,7 @@ ns.iconThemeOrder = {
     "TheMonk",
     "TheDruid",
     "TheDeathKnight",
+    "TheBDK",
     "TheEvoker",
 }
 

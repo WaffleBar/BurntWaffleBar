@@ -2,6 +2,16 @@
 
 All notable changes to BurntWaffleBar are documented here.
 
+## [2.6.18] - 2026-07-31
+
+### Added
+- **The Sub Rogue** icon theme — Midnight Subtlety Rogue pack (violet Shadow Dance, cold steel, charcoal leather, Trickster / Deathstalker); freeform silhouettes matching specialty pack quality; selectable beside The Rogue
+
+## [2.6.17] - 2026-07-31
+
+### Added
+- **The BDK** icon theme — Midnight Blood Death Knight pack (crimson blood, ivory bone, blackened steel, San'layn / Deathbringer); freeform silhouettes matching specialty pack quality; selectable beside The Death Knight
+
 ## [2.6.16] - 2026-07-31
 
 ### Added

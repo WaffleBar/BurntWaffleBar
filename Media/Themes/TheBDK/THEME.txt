@@ -1,0 +1,26 @@
+The BDK theme
+=============
+
+Retail WoW Blood Death Knight (Midnight) — deep crimson blood, ivory bone,
+blackened saronite, San'layn vampire glow, and Deathbringer reaper shadow.
+Spec-flavored sibling of The Death Knight; pick it manually so Blood tanks get
+Bone Shield / Dancing Rune Weapon fantasy without replacing the default DK pack.
+
+NOT a frost/unholy recolor and NOT a Ret/Fire Mage clone. Motifs are deliberately
+Blood-only:
+  Bone Shield crest, crossed runeblades, bone-bound tome, Acherus blood citadel,
+  Dancing Rune Weapons, blood parchment scroll, skull blood trophy, Runeforge,
+  Reaper's Mark talent sigil, Blood DK portrait, Deathbringer/San'layn guild,
+  twin blood chalices, bone rune menu plate — no frost ice, no teal water,
+  no holy gold fist.
+
+Shape language: freeform function silhouettes (outer cutout follows the object).
+
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(ProcessTheBDK.cs runner).
+
+  Raw:  source/TheBDK_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The BDK
+(turn off Use Class Theme if you are a Death Knight on the default The Death Knight pack).

@@ -1,0 +1,27 @@
+The Sub Rogue theme
+===================
+
+Retail WoW Subtlety Rogue (Midnight) — deep violet Shadow Dance mist, cold
+silver steel, charcoal leather, indigo stealth glow, Trickster Unseen Blade
+sparkle, and Deathstalker's Mark focus. Spec-flavored sibling of The Rogue;
+pick it manually so Subtlety players get shadow-assassin fantasy without
+replacing the default Rogue class theme.
+
+NOT a venom Assassination recolor and NOT an Outlaw pirate gold pack. Motifs
+are deliberately Subtlety-only:
+  Shadow Dance horseshoe crest, crossed shadow daggers, shadow libram,
+  moonlit safehouse, Unseen Blade party, violet quest scroll, shadow trophy,
+  dagger-honing stone, Deathstalker's Mark talent, hooded Sub portrait,
+  Deathstalker / Trickster guild figure, twin shadow-mist cups, violet gear —
+  no venom green, no blood crimson, no teal water.
+
+Shape language: freeform function silhouettes (outer cutout follows the object).
+
+Source: bespoke multi-material AI art. Processed via tools/ProcessPreserveThemeIcons.cs
+(ProcessTheSubRogue.cs runner).
+
+  Raw:  source/TheSubRogue_{Name}.png
+  Out:  this folder / {Name}.png
+
+Select in /bw → Icon Theme → The Sub Rogue
+(turn off Use Class Theme if you are a Rogue on the default The Rogue pack).

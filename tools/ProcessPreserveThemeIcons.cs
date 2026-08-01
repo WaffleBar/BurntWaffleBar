@@ -451,6 +451,10 @@ public static class ProcessPreserveThemeIcons
         ProcessTheme("TheRetPally", Path.Combine(themesRoot, "TheRetPally", "source"), Path.Combine(themesRoot, "TheRetPally"), 22, 10, 6, 128, 0.68f, true, true);
         // Freeform Resto Shammy: same pipeline (seafoam / totem / Healing Rain silhouettes).
         ProcessTheme("TheRestoShammy", Path.Combine(themesRoot, "TheRestoShammy", "source"), Path.Combine(themesRoot, "TheRestoShammy"), 22, 10, 6, 128, 0.68f, true, true);
+        // Freeform BDK: same pipeline (crimson blood / bone / blackened steel silhouettes).
+        ProcessTheme("TheBDK", Path.Combine(themesRoot, "TheBDK", "source"), Path.Combine(themesRoot, "TheBDK"), 22, 10, 6, 128, 0.68f, true, true);
+        // Freeform Sub Rogue: same pipeline (violet Shadow Dance / cold steel silhouettes).
+        ProcessTheme("TheSubRogue", Path.Combine(themesRoot, "TheSubRogue", "source"), Path.Combine(themesRoot, "TheSubRogue"), 22, 10, 6, 128, 0.68f, true, true);
         ProcessTheme("TheWarlock", Path.Combine(themesRoot, "TheWarlock", "source"), Path.Combine(themesRoot, "TheWarlock"), 16, 8, 24);
         ProcessTheme("TheMonk", Path.Combine(themesRoot, "TheMonk", "source"), Path.Combine(themesRoot, "TheMonk"), 10, 20, 14);
         ProcessTheme("TheDruid", Path.Combine(themesRoot, "TheDruid", "source"), Path.Combine(themesRoot, "TheDruid"), 20, 14, 8);
